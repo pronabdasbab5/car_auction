@@ -108,3 +108,14 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+// Routes for user
+
+Route::get('/user', function () {
+    return view('user.login');
+});
+
+Route::get('/user/register', function () {
+    return view('user.register');
+});
+Route::post('user/register', 'FrontController@register');
+
