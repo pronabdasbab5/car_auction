@@ -10,6 +10,7 @@
 	<title>Gaaditrade</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	
 	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 	<link href="css/owl.theme.css" rel="stylesheet" media="screen">
@@ -30,8 +31,9 @@
 
 	@include('user.header')
 
-
-	<!--Newsletter-->
+	@if(isset($message))
+              <div id="sendmessage">{{$message}}</div>
+              @endif
 	<section id='contact'>
 		<div class="container">
 			<div class='wow fadeInDown'>
@@ -39,10 +41,11 @@
 				<p class='subtitle'>Don't have an account. <a href="{{url('user/register')}}">Sign Up Now</a></p>
 			</div>
 			<div id='newsletter-form'>
-            <form>
-				<input required class="subscribe-input" type="email" placeholder="Email">
-				<input required class="subscribe-input" type="password" placeholder="Password">
-				<!--<button class='btn btn-primary subscribe-submit' type="submit">Subscribe</button>-->
+            <form method="POST" action="{{url('user/login')}}">
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
+				<input required class="subscribe-input" type="text" name="user_name" placeholder="Email">
+				<input required class="subscribe-input" type="password" name="password" placeholder="Password">
+				<button class='btn btn-primary subscribe-submit' type="submit">Login</button>
             </form>
             </div>
 		</div>
@@ -50,21 +53,7 @@
 
 	<!--FOOTER-->
 	@include('user.footer')
-	<!--<div id='demo-switcher'>-->
-	<!--	<div class='demo-icon'><span class='icon ion-ios7-gear'></span></div>-->
-	<!--	<div class='demo-form'>-->
-	<!--		<h4>Layout Style</h4>-->
-	<!--		<a class='light' href="Rego-andr.html">light</a>-->
-	<!--		<a class='dark' href="Rego-andr-dark.php">dark</a>-->
-	<!--		<h4>Main Colors</h4>-->
-	<!--		<a class='col col0' href="Rego-andr-dark.php"><div></div><div></div></a>-->
-	<!--		<a class='col col1' href="Rego-andr-dark-col1.html"><div></div><div></div></a>-->
-	<!--		<a class='col col2' href="Rego-andr-dark-col2.html"><div></div><div></div></a>-->
-	<!--		<h4>Devices</h4>-->
-	<!--		<a class='device ios' href="Rego-ios-dark.html"><span class='icon ion-social-apple'></span><span class='text'>iOS</span></a>-->
-	<!--		<a class='device android' href="#"><span class='icon ion-social-android'></span><span class='text'>Android</span></a>-->
-	<!--	</div>-->
-	<!--</div>-->
+
 	
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/retina.min.js"></script>

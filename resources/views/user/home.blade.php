@@ -2,26 +2,22 @@
 <!-- DEMO -->
 <html lang="en">
 
-<!-- Mirrored from tanguyalbrici.com/Rego/Rego-andr-dark.php by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2019 09:12:37 GMT -->
-
-<!-- Mirrored from gaaditrade.in/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 20 Oct 2019 11:57:11 GMT -->
-<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
 	<title>Gaaditrade</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 	
-	<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
-	<link href="{{ asset('css/owl.theme.css') }}" rel="stylesheet" media="screen">
-	<link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet" media="screen">
-	<link href="{{ asset('css/style-dark.cs') }}s" rel="stylesheet" media="screen">
-	<link href="{{ asset('css/animate.css') }}" rel="stylesheet" media="screen">
-	<link href="{{ asset('css/ionicons.css') }}" rel="stylesheet" media="screen">
-	<link rel="stylesheet" href="{{ asset('css/nivo-lightbox.css') }}" type="text/css" />
-	<link rel="stylesheet" href="{{ asset('css/nivo-themes/default/default.css') }}" type="text/css" />
+	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+	<link href="css/owl.theme.css" rel="stylesheet" media="screen">
+	<link href="css/owl.carousel.css" rel="stylesheet" media="screen">
+	<link href="css/style-dark.css" rel="stylesheet" media="screen">
+	<link href="css/animate.css" rel="stylesheet" media="screen">
+	<link href="css/ionicons.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="css/nivo-lightbox.css" type="text/css" />
+	<link rel="stylesheet" href="css/nivo-themes/default/default.css" type="text/css" />
 
-	<link href="{{ asset('img/logo1.png') }}" rel="shortcut icon">
+	<link href="img/logo1.png" rel="shortcut icon">
 
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Merriweather:300italic' rel='stylesheet' type='text/css'>
@@ -30,39 +26,45 @@
 <body class='android'>
 
 	@include('user.header')
-	@if(isset($message))
-              <div id="sendmessage">{{$message}}</div>
-              @endif
 
-	<!--Newsletter-->
-	<form method="POST" action="{{url('user/registeration')}}" enctype="multipart/form-data">
-	<section id='contact'>
+<!--DETAILED INFO-->
+<section id='detailed'>
 		<div class="container">
-			<div class='wow fadeInDown'>
-				<h2>Login</h2>
-				<p class='subtitle'>Don't have an account. <a href="">Sign Up Now</a></p>
-			</div>
-			
-            
-			<div id='newsletter-form'>
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-            <input required class="subscribe-input" name="members_name" type="text" placeholder="Name">
-				<input required class="subscribe-input" name="member_email" type="email" placeholder="Email">
-				<input required class="subscribe-input" name="mobile_no" type="text" placeholder="Pnone No">
-                <input required class="subscribe-input" name="password" type="password" placeholder="Password">
-                <input required class="subscribe-input" name="address_proof" type="file" placeholder="Address Proof">
-                <input required class="subscribe-input" name="id_proof" type="file" placeholder="Id Proof">
-                <textarea required class="subscribe-input" name="address" placeholder="Address"></textarea>
+			<div class='row'>
+				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
+					<h2>Detailed Information</h2>
+					<p class='subtitle'>Know why we are better for you to bid online.</p>
 				</div>
-				<button class='btn btn-primary subscribe-submit' type="submit">Submit</button>
-            
-            
+				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
+					<div class='row'>
+						<div class='col-sm-2 col-md-2 col-lg-2'>
+							<div class='icon ion-ios7-loop-strong'></div>
+						</div>
+						<div class='col-sm-10 col-md-10 col-lg-10'>
+							<h4>Huge Variety To Bid</h4>
+							<p>Huge number of sellers provide you with huge variety of vehicles to bid and win through the app.</p>
+						</div>
+					</div>
+					<div class='row'>
+						<div class='col-sm-2 col-md-2 col-lg-2'>
+							<div class='icon ion-ios7-stopwatch-outline'></div>
+						</div>
+						<div class='col-sm-10 col-md-10 col-lg-10'>
+							<h4>Huge Time Saver</h4>
+							<p>Our easy UI/UX and easy features saves your high amount of time and helps you bid on the go.</p>
+						</div>
+					</div>
+				</div>
+				<div class='col-sm-6 col-md-6 col-lg-6 img wow fadeInRight delay-sm'>
+					<img src="img/3Phones.png" class='img-responsive' alt>
+				</div>
+			</div>
 		</div>
 	</section>
-	</form>
+
 	<!--FOOTER-->
 	@include('user.footer')
-
+	
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/retina.min.js"></script>
 	<script src="js/owl.carousel.min.js"></script>
@@ -158,21 +160,6 @@
 				hideNavig();
 			};
 		});
-
-		// Demo switcher
-// 		$( "#demo-switcher .demo-icon" ).click(function() {
-// 			if($('#demo-switcher').hasClass("active")){
-// 				$('#demo-switcher').animate({"left":"-140px"},function(){
-// 					$('#demo-switcher').toggleClass("active");
-// 				});						
-// 			}
-// 			else{
-// 				$('#demo-switcher').animate({"left":"0px"},function(){
-// 				$('#demo-switcher').toggleClass("active");
-// 			});			
-// 		} 
-// 		});
-
 		// Resize event handler
 		myWindow.resize(function() {
 			// show/hide responsive navigation
@@ -242,7 +229,4 @@
 
 </body>
 
-<!-- Mirrored from tanguyalbrici.com/Rego/Rego-andr-dark.php by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2019 09:12:41 GMT -->
-
-<!-- Mirrored from gaaditrade.in/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 20 Oct 2019 11:57:42 GMT -->
 </html>

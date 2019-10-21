@@ -117,5 +117,9 @@ Route::get('/user', function () {
 Route::get('/user/register', function () {
     return view('user.register');
 });
-Route::post('user/register', 'FrontController@register');
+Route::post('user/registeration', 'FrontController@register');
+
+Route::post('user/login', 'FrontController@login');
+
+Route::get('/user/home', 'FrontController@home')->name('home')->middleware('access-token');
 
