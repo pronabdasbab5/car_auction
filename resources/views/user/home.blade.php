@@ -32,31 +32,45 @@
 		<div class="container">
 			<div class='row'>
 				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
-					<h2>Detailed Information</h2>
-					<p class='subtitle'>Know why we are better for you to bid online.</p>
+					<h2>Live Autions</h2>
+				</div>
 				</div>
 				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
+				@foreach($data as $key => $cat)
+				<a href="{{url('user/vehicle-details', $cat['id'])}}">
 					<div class='row'>
 						<div class='col-sm-2 col-md-2 col-lg-2'>
 							<div class='icon ion-ios7-loop-strong'></div>
 						</div>
 						<div class='col-sm-10 col-md-10 col-lg-10'>
-							<h4>Huge Variety To Bid</h4>
-							<p>Huge number of sellers provide you with huge variety of vehicles to bid and win through the app.</p>
+						@if($cat['auction_group_name'])
+							<h4>{{$cat['auction_group_name']}}</h4>
+						@endif
+						@if($cat['time'])
+							<h4>Ends in: {{$cat['time']}}</h4>
+						@endif
+						@if($cat['total_vehicle'])
+							<h4>Total vehicles: {{$cat['total_vehicle']}}</h4>
+						@endif
+						
 						</div>
 					</div>
-					<div class='row'>
-						<div class='col-sm-2 col-md-2 col-lg-2'>
-							<div class='icon ion-ios7-stopwatch-outline'></div>
-						</div>
-						<div class='col-sm-10 col-md-10 col-lg-10'>
-							<h4>Huge Time Saver</h4>
-							<p>Our easy UI/UX and easy features saves your high amount of time and helps you bid on the go.</p>
-						</div>
-					</div>
+					</a>
+					@endforeach
 				</div>
-				<div class='col-sm-6 col-md-6 col-lg-6 img wow fadeInRight delay-sm'>
-					<img src="img/3Phones.png" class='img-responsive' alt>
+				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
+				@if($memberData['deposit'])
+							<h4>Deposit: {{$memberData['deposit']}}</h4>
+						@endif
+						@if($memberData['buyingLimit'])
+							<h4>Buying Limit: {{$memberData['buyingLimit']}}</h4>
+						@endif
+						@if($memberData['availableLimit'])
+							<h4>Available Limit: {{$memberData['availableLimit']}}</h4>
+						@endif
+				
+				
+				
 				</div>
 			</div>
 		</div>

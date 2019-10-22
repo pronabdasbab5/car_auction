@@ -123,3 +123,5 @@ Route::post('user/login', 'FrontController@login');
 
 Route::get('/user/home', 'FrontController@home')->name('home')->middleware('access-token');
 
+Route::get('user/vehicle-details', 'FrontController@home')->name('home')->middleware('access-token');
+
