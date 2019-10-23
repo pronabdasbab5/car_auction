@@ -12,16 +12,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	
-	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-	<link href="css/owl.theme.css" rel="stylesheet" media="screen">
-	<link href="css/owl.carousel.css" rel="stylesheet" media="screen">
-	<link href="css/style-dark.css" rel="stylesheet" media="screen">
-	<link href="css/animate.css" rel="stylesheet" media="screen">
-	<link href="css/ionicons.css" rel="stylesheet" media="screen">
-	<link rel="stylesheet" href="css/nivo-lightbox.css" type="text/css" />
-	<link rel="stylesheet" href="css/nivo-themes/default/default.css" type="text/css" />
+	<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+	<link href="{{ asset('css/owl.theme.css') }}" rel="stylesheet" media="screen">
+	<link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet" media="screen">
+	<link href="{{ asset('css/style-dark.cs') }}s" rel="stylesheet" media="screen">
+	<link href="{{ asset('css/animate.css') }}" rel="stylesheet" media="screen">
+	<link href="{{ asset('css/ionicons.css') }}" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="{{ asset('css/nivo-lightbox.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ asset('css/nivo-themes/default/default.css') }}" type="text/css" />
 
-	<link href="img/logo1.png" rel="shortcut icon">
+	<link href="{{ asset('img/logo1.png') }}" rel="shortcut icon">
 
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Merriweather:300italic' rel='stylesheet' type='text/css'>
@@ -40,15 +40,19 @@
 				<h2>Login</h2>
 				<p class='subtitle'>Don't have an account. <a href="{{url('user/register')}}">Sign Up Now</a></p>
 			</div>
-			<div id='newsletter-form'>
+		
             <form method="POST" action="{{url('user/login')}}">
-				<input type="hidden" name="_token" value="{{csrf_token()}}">
-				<input required class="subscribe-input" type="text" name="user_name" placeholder="Email">
+				<div id='newsletter-form'>
+					<input type="hidden" name="_token" value="{{csrf_token()}}">
+				<input required class="subscribe-input" type="text" name="user_name" placeholder="Mobile No.">
 				<input required class="subscribe-input" type="password" name="password" placeholder="Password">
-				<button class='btn btn-primary subscribe-submit' type="submit">Login</button>
+				
+			<center> <button class='btn btn-primary subscribe-submit' type="submit">Login</button> </center>
+			</div>
+			</div>
             </form>
-            </div>
-		</div>
+            
+		
 	</section>
 
 	<!--FOOTER-->

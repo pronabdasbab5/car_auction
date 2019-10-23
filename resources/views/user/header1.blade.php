@@ -8,12 +8,12 @@
 				<nav  id="nav" class='nav'>
 					<ul class='nav-inner'>
 						<li class='current'><a href="#header">Home</a></li>
-						<!-- <li><a href="#about">Why Us</a></li>
+						<li><a href="#about">Why Us</a></li>
 						<li><a href="#features">Features</a></li>
 						<li><a href="#screenshots">Screens</a></li>
 						<li><a href="#reviews">About Us</a></li>
 						<li><a href="#download">Download</a></li>
-						<li><a href="#contact">Contact</a></li> -->
+						<li><a href="#contact">Contact</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -47,7 +47,7 @@
 				<nav  id="nav-fixed" class='nav'>
 					<a id="show-nav" title="Show navigation"><div></div></a>
     				<a id="hide-nav" title="Hide navigation"><div></div></a>
-					<!-- <ul id='nav-ul' class='nav-inner'>
+					<ul id='nav-ul' class='nav-inner'>
 						<li><a href="#header">Home</a></li>
 						<li class='current'><a href="#about">Why Us</a></li>
 						<li><a href="#features">Features</a></li>
@@ -56,7 +56,7 @@
 						<li><a href="#download">Download</a></li>
 						<li><a href="#contact">Contact</a></li>
 						<li id='off-nav'></li>
-					</ul> -->
+					</ul>
 				</nav>
 			</div>
 		</div>

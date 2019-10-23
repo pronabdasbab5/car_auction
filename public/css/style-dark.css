@@ -793,7 +793,7 @@ div > a.btn:nth-of-type(2){
 	text-align: center;
 }
 #newsletter-form .subscribe-submit{
-	position: absolute;
+	/* position: absolute; */
 	right: 0;
 	padding-left: 28px;
 }
@@ -923,9 +923,10 @@ footer .copyright{
 	}
 }
 @media (max-width: 767px) {
-	*{
+	/* *{
 		text-align: center;
-	}
+	} */
+	
 	h1{
 		font-size: 56px;
 	}
@@ -1079,6 +1080,7 @@ footer .copyright{
 	h4, .btn{
 		font-weight: 400;
 	}
+
 	section{
 		padding: 45px 0;
 	}
@@ -1099,6 +1101,9 @@ footer .copyright{
 	}
 }
 @media (max-width: 399px) {
+	.inputfile {
+		width: 100%!important;
+	}
 	#header-btn{
 		margin-bottom: 38px;
 	}
@@ -1132,6 +1137,7 @@ footer .copyright{
 	#newsletter-form .subscribe-input{
 		width: 100%;
 	}
+	
 	#newsletter-form .subscribe-submit{
 		position: static;
 		width: 100%;
@@ -1202,4 +1208,27 @@ footer .copyright{
 		background: #102129 url('../img/header-sm.jpg') no-repeat top center;
 		background-size: cover;
 	}
+}
+.inputfile:hover{
+background-color: #e8f0fe;
+	color: #505257;
+}
+
+.inputfile {
+	font-weight: 300;
+	width: 95%;
+	text-align: center;
+	margin-bottom: 10px;
+	background-color: #e8f0fe;
+	color: #505257;
+}
+.inputfile:hover:before{
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.inputfile::before {
+	
+	background-color: #e8f0fe;
 }

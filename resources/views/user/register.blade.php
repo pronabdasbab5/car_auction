@@ -39,8 +39,8 @@
 	<section id='contact'>
 		<div class="container">
 			<div class='wow fadeInDown'>
-				<h2>Login</h2>
-				<p class='subtitle'>Don't have an account. <a href="">Sign Up Now</a></p>
+				<h2>Sign Up</h2>
+				<p class='subtitle'>Already have an account. <a href="{{url('/user')}}">Login Now</a></p>
 			</div>
 			
             
@@ -50,12 +50,22 @@
 				<input required class="subscribe-input" name="member_email" type="email" placeholder="Email">
 				<input required class="subscribe-input" name="mobile_no" type="text" placeholder="Pnone No">
                 <input required class="subscribe-input" name="password" type="password" placeholder="Password">
-                <input required class="subscribe-input" name="address_proof" type="file" placeholder="Address Proof">
-                <input required class="subscribe-input" name="id_proof" type="file" placeholder="Id Proof">
-                <textarea required class="subscribe-input" name="address" placeholder="Address"></textarea>
-				</div>
-				<button class='btn btn-primary subscribe-submit' type="submit">Submit</button>
-            
+				
+				<label class="file-lbl">
+				<input style="display:none" required  name="address_proof" type="file" placeholder="Address Proof">
+				<span style="background-color:#e9f0f2;" class="btn btn-primary inputfile">Address Proof</span>
+			</label>
+			<label class="file-lbl">
+				<input style="display:none" required  name="id_proof" type="file" placeholder="id Proof">
+				<span class="btn btn-primary inputfile">Id Proof</span>
+			</label>
+				
+                <input type="textarea" required class="subscribe-input" name="address" placeholder="Address">
+				
+				<center>
+					<button class='btn btn-primary subscribe-submit' type="submit">Sign Up</button>
+				</center>
+            </div>
             
 		</div>
 	</section>
