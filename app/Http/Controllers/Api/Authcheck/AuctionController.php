@@ -12,6 +12,7 @@ use App\Models\Bid\Bid;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use File;
 use Response;
+use DB;
 
 class AuctionController extends BaseController
 {
@@ -661,6 +662,28 @@ class AuctionController extends BaseController
             }
 
             return $this->sendResponse($data, "Vehicle Retrive Successfull");
+        } else {
+
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
+    }
+
+    public function add_wish_list (Request $request) {
+
+        if ($request->has('userId') && $request->has('vehicleId')) {
+
+            DB::table('whish_list')
+                ->insert([
+                    'vehicleId' => $request->input('vehicleId'),
+                    'userId'    => $request->input('userId')
+                ]);
+            
+            $data = [
+                'status' => "success"
+            ];
+
+            return $this->sendResponse($data, "Vehicle has been added successfully in the wish list");
         } else {
 
             $data = [];

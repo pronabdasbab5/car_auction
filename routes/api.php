@@ -44,6 +44,7 @@ Route::namespace('Api')->group(function () {
             Route::post('vehicle_details', 'AuctionController@vehicle_details')->name('vehicle_details');
             Route::post('your_bid', 'AuctionController@your_bid')->name('your_bid');
             Route::post('deposit_buying_limit_available', 'AuctionController@deposit_buying_limit_available')->name('deposit_buying_limit_available');
+            Route::post('add_wish_list', 'AuctionController@add_wish_list')->name('add_wish_list');
         });
     });
 });
