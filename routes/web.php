@@ -127,11 +127,13 @@ Route::post('user/login', 'FrontController@login');
 
 Route::get('/user/home', 'FrontController@home')->name('home')->middleware('access-token');
 
-Route::get('user/vehicle-details/{id}', function (Request $request) {
-    //$request->userId = $request->session()->get('user_id');
-   // dd($request->id);
-    $vehicle_details = (new FrontController)->fetch_auction_vehicle($request);
-    dd($vehicle_details);
-    return view('user.vehicle_details')->with('data', $data);
-})->middleware('access-token');
+Route::get('user/vehicle-details/{id}', 'FrontController@fetch_auction_vehicle')->middleware('access-token');
+// Route::get('user/vehicle-details/{id}', function (Request $request) {
+//     //$request->userId = $request->session()->get('user_id');
+//    // dd($request->id);
+//     $vehicle_details = (new FrontController)->fetch_auction_vehicle($request);
+//     return view('user.vehicle_details')->with('data', $vehicle_details->data);
+// })->middleware('access-token');
+
+Route::get('user/vehicle/{auction_id}/{vehicle_id}', 'FrontController@vehicle_details')->name('vehicle')->middleware('access-token');
 

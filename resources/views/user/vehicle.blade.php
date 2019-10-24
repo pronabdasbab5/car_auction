@@ -36,64 +36,21 @@
 				</div>
 				</div>
 				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
-				@foreach($data as $key => $cat)
-				<a href="{{url('user/vehicle/' . $cat['auction_id'] . '/' . $cat['vehicle_id'])}}">
+
+				<a href="">
 					<div class='row'>
 						<div class='col-sm-2 col-md-2 col-lg-2'>
 							<div class='icon ion-ios7-loop-strong'></div>
 						</div>
 						<div class='col-sm-10 col-md-10 col-lg-10'>
-						@if($cat['time'])
-							<h4>Ends In {{$cat['time']}}</h4>
-						@endif
-						@if($cat['vehicle_name'])
-							<h4>{{$cat['vehicle_name']}}</h4>
-						@endif
-						@if($cat['regisation_no'])
-							<h4>Registration Number: {{$cat['regisation_no']}}</h4>
-						@endif
-						@if($cat['regisation_available'])
-							<h4>Registration Available: {{$cat['regisation_available']}}</h4>
-						@endif
-						@if($cat['regisation_no'])
-							<h4>Registration No: {{$cat['regisation_no']}}</h4>
-						@endif
-						@if($cat['mfg_month_year'])
-							<h4>Manufature Date: {{$cat['mfg_month_year']}}</h4>
-						@endif
-						@if($cat['fuel_type'])
-							<h4>Fuel Type: {{$cat['fuel_type']}}</h4>
-						@endif
-						@if($cat['owner_type'])
-							<h4>Owner Type: {{$cat['owner_type']}}</h4>
-						@endif
-						@if($cat['state'])
-							<h4>State: {{$cat['state']}}</h4>
-						@endif
-						@if($cat['transmission_type'])
-							<h4>Transmission Type: {{$cat['transmission_type']}}</h4>
-						@endif
-						@if($cat['total_remaining_bids'])
-							<h4>Bids Remaining: {{$cat['total_remaining_bids']}}</h4>
-						@endif
-
-						@if($cat['current_bid_amount'])
-							<h4>Current Bid Amount: {{$cat['current_bid_amount']}}</h4>
-						@endif
-
-						@foreach($cat['images'] as $i => $img)
-						@if($img['img'])
-							<img src="{{ $img['img'] }}">
-						@endif
-						@endforeach
-						
+						{{dd($data['vehicle_id'])}}
+                        
 						</div>
 					</div>
 					</a>
-					@endforeach
 				</div>
 				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
-				
+						
 				
 				</div>
 			</div>

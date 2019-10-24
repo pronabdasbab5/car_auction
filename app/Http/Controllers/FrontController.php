@@ -279,7 +279,7 @@ class FrontController extends BaseController
                 /** End Bid Calculation **/
                 
                 $data [] = [
-
+                    'auction_id'           => $request->id, 
                     'time'                 => $time,
                     'status'               => $status,
                     'vehicle_id'           => $value['id'],
@@ -301,25 +301,24 @@ class FrontController extends BaseController
                 $vehicle_img = [];
             }
 
-            return $this->sendResponse($data, "Vehicle Retrive Successfull");
+            return view('user.vehicle_details')->with('data', $data);
 	}
 	
 	public function vehicle_details (Request $request) {
 
-        if ($request->has('userId')) {
-
+        //dd($request);
             $data          = "";
             $vehicle       = new Vehicle;
             $vehicleimages = new Vehicleimages;
             $member        = new Members;
             $bid           = new Bid;
             $auction       = new Auction;
-            $auctionData   = $auction->find($request->input('auction_id'));
-            $vehicleData   = $vehicle->where('id', $request->input('vehicle_id'))
-                                    ->where('auction_id', $request->input('auction_id'))
+            $auctionData   = $auction->find($request->auction_id);
+            $vehicleData   = $vehicle->where('id', $request->vehicle_id)
+                                    ->where('auction_id', $request->auction_id)
                                     ->get();
 
-            $vehicleimagesData = $vehicleimages->where('vehicle_id', $request->input('vehicle_id'))
+            $vehicleimagesData = $vehicleimages->where('vehicle_id', $request->vehicle_id)
                                                 ->get();
 
             foreach ($vehicleimagesData as $key_1 => $value_1) {
@@ -332,27 +331,17 @@ class FrontController extends BaseController
                 ];
             }
 
-            /** Time Calculation **/
-            // Declare and define two dates 
             $date1 = strtotime(date('Y-m-d'));  
             $date2 = strtotime($auctionData->end_date);  
                   
-            // Formulate the Difference between two dates 
             $diff = abs($date2 - $date1);  
                   
-            // To get the year divide the resultant date into 
-            // total seconds in a year (365*60*60*24) 
             $years = floor($diff / (365*60*60*24));  
-                  
-            // To get the month, subtract it with years and 
-            // divide the resultant date into 
-            // total seconds in a month (30*60*60*24) 
+
             $months = floor(($diff - $years * 365*60*60*24) 
                                                / (30*60*60*24));  
                   
-            // To get the day, subtract it with years and  
-            // months and divide the resultant date into 
-            // total seconds in a days (60*60*24) 
+
             $days = floor(($diff - $years * 365*60*60*24 -  
                              $months*30*60*60*24)/ (60*60*24));  
 
@@ -363,11 +352,9 @@ class FrontController extends BaseController
 
             if (!empty($days)) 
                 $time = $days."D";
-            /** End of Time Calculation **/
 
-            /** User Bid Calculation **/
-            $bidCnt = $bid->where('user_id', $request->input('userId'))
-                            ->where('vehicle_id', $request->input('vehicle_id'))
+            $bidCnt = $bid->where('user_id', $request->session()->get('user_id'))
+                            ->where('vehicle_id', $request->vehicle_id)
                             ->count();
 
             if($bidCnt == 0){
@@ -377,8 +364,8 @@ class FrontController extends BaseController
             } else {
 
                 $bids           = 20 - $bidCnt;
-                $bidData        = $bid->where('user_id', $request->input('userId'))
-                                        ->where('vehicle_id', $request->input('vehicle_id'))
+                $bidData        = $bid->where('user_id', $request->session()->get('user_id'))
+                                        ->where('vehicle_id', $request->vehicle_id)
                                         ->orderBy('id', 'DESC')
                                         ->first();
                 $current_amount = $bidData->current_bid_amount;
@@ -444,12 +431,8 @@ class FrontController extends BaseController
                 'avi_keys_available'         => $vehicleData[0]->avi_keys_available,
                 'summary'                    => $vehicleData[0]->summary,
             ];
-
-            return $this->sendResponse($data, "Vehicle Retrive Successfull");
-        } else {
-
-            $data = [];
-            return $this->sendResponse($data, "Please ! Fillup the required fields");
-		}
+            //dd($data);
+            //return $this->sendResponse($data, "Vehicle Retrive Successfull");
+            return view('user.vehicle')->with('data', $data);
 	}
 }
