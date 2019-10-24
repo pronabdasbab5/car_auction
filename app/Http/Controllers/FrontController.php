@@ -11,6 +11,8 @@ use App\Models\Vehicle\Vehicle;
 use App\Models\Apikey\Apikey;
 use Intervention\Image\ImageManagerStatic as Image;
 
+use App\Http\Controllers\Api\BaseController as BaseController;
+
 use Illuminate\Http\Request;
 
 use Redirect;
@@ -19,7 +21,7 @@ use File;
 use DateTime;
 use Hash;
 
-class FrontController extends Controller
+class FrontController extends BaseController
 {
     //
     public function register(Request $request)
@@ -208,8 +210,7 @@ class FrontController extends Controller
 	}
 	
 	public function fetch_auction_vehicle (Request $request) {
-
-        if ($request->has('id')) {
+		//dd($request->id);
 
             $data          = [];
             $vehicle       = new Vehicle;
@@ -217,8 +218,8 @@ class FrontController extends Controller
             $member        = new Members;
             $bid           = new Bid;
             $auction       = new Auction;
-            $auctionData   = $auction->find($request->input('id'));
-            $vehicleData   = $vehicle->where('auction_id', $request->input('id'))
+            $auctionData   = $auction->find($request->id);
+            $vehicleData   = $vehicle->where('auction_id', $request->id)
                                     ->get();
 
             foreach ($vehicleData as $key => $value) {
@@ -234,28 +235,13 @@ class FrontController extends Controller
                         'img'=> $url
                     ];
                 }
-
-                /** Time Calculation **/
-                // Declare and define two dates 
                 $date1 = strtotime(date('Y-m-d'));  
                 $date2 = strtotime($auctionData->end_date);  
-                  
-                // Formulate the Difference between two dates 
                 $diff = abs($date2 - $date1);  
-                  
-                // To get the year divide the resultant date into 
-                // total seconds in a year (365*60*60*24) 
-                $years = floor($diff / (365*60*60*24));  
-                  
-                // To get the month, subtract it with years and 
-                // divide the resultant date into 
-                // total seconds in a month (30*60*60*24) 
+                $years = floor($diff / (365*60*60*24));   
                 $months = floor(($diff - $years * 365*60*60*24) 
                                                / (30*60*60*24));  
                   
-                // To get the day, subtract it with years and  
-                // months and divide the resultant date into 
-                // total seconds in a days (60*60*24) 
                 $days = floor(($diff - $years * 365*60*60*24 -  
                              $months*30*60*60*24)/ (60*60*24));  
 
@@ -266,9 +252,7 @@ class FrontController extends Controller
 
                 if (!empty($days)) 
                     $time = $days."D";
-                /** End of Time Calculation **/
 
-                /** User Bid Calculation **/
                 $bidCnt = $bid->where('user_id', $request->session()->get('user_id'))
                                 ->where('vehicle_id', $value['id'])
                                 ->count();
@@ -318,10 +302,154 @@ class FrontController extends Controller
             }
 
             return $this->sendResponse($data, "Vehicle Retrive Successfull");
+	}
+	
+	public function vehicle_details (Request $request) {
+
+        if ($request->has('userId')) {
+
+            $data          = "";
+            $vehicle       = new Vehicle;
+            $vehicleimages = new Vehicleimages;
+            $member        = new Members;
+            $bid           = new Bid;
+            $auction       = new Auction;
+            $auctionData   = $auction->find($request->input('auction_id'));
+            $vehicleData   = $vehicle->where('id', $request->input('vehicle_id'))
+                                    ->where('auction_id', $request->input('auction_id'))
+                                    ->get();
+
+            $vehicleimagesData = $vehicleimages->where('vehicle_id', $request->input('vehicle_id'))
+                                                ->get();
+
+            foreach ($vehicleimagesData as $key_1 => $value_1) {
+
+                $url = route('vehicle_image', ['file_name' => $value_1['img_path']]);
+
+                $vehicle_img[] = [
+                    'id' => $value_1['id'],
+                    'img'=> $url
+                ];
+            }
+
+            /** Time Calculation **/
+            // Declare and define two dates 
+            $date1 = strtotime(date('Y-m-d'));  
+            $date2 = strtotime($auctionData->end_date);  
+                  
+            // Formulate the Difference between two dates 
+            $diff = abs($date2 - $date1);  
+                  
+            // To get the year divide the resultant date into 
+            // total seconds in a year (365*60*60*24) 
+            $years = floor($diff / (365*60*60*24));  
+                  
+            // To get the month, subtract it with years and 
+            // divide the resultant date into 
+            // total seconds in a month (30*60*60*24) 
+            $months = floor(($diff - $years * 365*60*60*24) 
+                                               / (30*60*60*24));  
+                  
+            // To get the day, subtract it with years and  
+            // months and divide the resultant date into 
+            // total seconds in a days (60*60*24) 
+            $days = floor(($diff - $years * 365*60*60*24 -  
+                             $months*30*60*60*24)/ (60*60*24));  
+
+            $time = "";
+
+            if (!empty($months)) 
+                $time = $months."M, ".$days."D, ".$hours."H";
+
+            if (!empty($days)) 
+                $time = $days."D";
+            /** End of Time Calculation **/
+
+            /** User Bid Calculation **/
+            $bidCnt = $bid->where('user_id', $request->input('userId'))
+                            ->where('vehicle_id', $request->input('vehicle_id'))
+                            ->count();
+
+            if($bidCnt == 0){
+                $bids           = 20;
+                $current_amount = 1000;
+                $status         = "Start bidding now !!";
+            } else {
+
+                $bids           = 20 - $bidCnt;
+                $bidData        = $bid->where('user_id', $request->input('userId'))
+                                        ->where('vehicle_id', $request->input('vehicle_id'))
+                                        ->orderBy('id', 'DESC')
+                                        ->first();
+                $current_amount = $bidData->current_bid_amount;
+
+                if($vehicleData[0]->auction_amount > $bidData->total_bid_amount)
+                    $status = "Lossing !!";
+
+                if($bidData->total_bid_amount >= $vehicleData[0]->auction_amount)
+                    $status = "Right Bid !!";
+            }
+            /** End Bid Calculation **/
+
+            $category     = new Category;
+            $categoryData = $category->find($vehicleData[0]->li_zone);
+                
+            $data  = [
+
+                'time'                       => $time,
+                'status'                     => $status,
+                'vehicle_id'                 => $vehicleData[0]->id,
+                'vehicle_name'               => $vehicleData[0]->vehicle_name,
+                'images'                     => $vehicle_img,
+                'regisation_no'              => $vehicleData[0]->rc_registration_no,
+                'regisation_available'       => $vehicleData[0]->rc_rc_available,
+                'mfg_month_year'             => $vehicleData[0]->bc_mfg_month_year,
+                'fuel_type'                  => $vehicleData[0]->bc_fuel_type,
+                'owner_type'                 => $vehicleData[0]->bc_owner_type,
+                'state'                      => $vehicleData[0]->li_state,
+                'transmission_type'          => $vehicleData[0]->bc_transmission_type,
+                'total_remaining_bids'       => $bids,
+                'current_bid_amount'         => $current_amount,
+                'bc_mfg_month_year'          => $vehicleData[0]->bc_mfg_month_year,
+                'bc_color'                   => $vehicleData[0]->bc_color,
+                'bc_engine_no'               => $vehicleData[0]->bc_engine_no,
+                'bc_chasis_no'               => $vehicleData[0]->bc_chasis_no,
+                'bc_transmission_type'       => $vehicleData[0]->bc_transmission_type,
+                'bc_fuel_type'               => $vehicleData[0]->bc_fuel_type,
+                'bc_owner_type'              => $vehicleData[0]->bc_owner_type,
+                'bc_vehicle_type'            => $vehicleData[0]->bc_vehicle_type,
+                'bc_ownership'               => $vehicleData[0]->bc_ownership,
+                'rc_rc_available'            => $vehicleData[0]->rc_rc_available,
+                'rc_registration_no'         => $vehicleData[0]->rc_registration_no,
+                'rc_registration_date'       => $vehicleData[0]->rc_registration_date,
+                'rc_reg_as'                  => $vehicleData[0]->rc_reg_as,
+                'tx_road_text_expiray_date'  => $vehicleData[0]->tx_road_text_expiray_date,
+                'tx_permit_type'             => $vehicleData[0]->tx_permit_type,
+                'tx_permit_expiray_date'     => $vehicleData[0]->tx_permit_expiray_date,
+                'tx_fitness_expiray_date'    => $vehicleData[0]->tx_fitness_expiray_date,
+                'tx_road_taxt_validity'      => $vehicleData[0]->tx_road_taxt_validity,
+                'hi_car_under_hypothecation' => $vehicleData[0]->hi_car_under_hypothecation,
+                'hi_financer_name'           => $vehicleData[0]->hi_financer_name,
+                'hi_noc_available'           => $vehicleData[0]->hi_noc_available,
+                'hi_repo_date'               => $vehicleData[0]->hi_repo_date,
+                'hi_loan_paid_off'           => $vehicleData[0]->hi_loan_paid_off,
+                'li_zone'                    => $categoryData->category,
+                'li_state'                   => $vehicleData[0]->li_state,
+                'li_city'                    => $vehicleData[0]->li_city,
+                'li_yard_name'               => $vehicleData[0]->li_yard_name,
+                'li_yard_location'           => $vehicleData[0]->li_yard_location,
+                'avi_superdari_status'       => $vehicleData[0]->avi_superdari_status,
+                'avi_tax_type'               => $vehicleData[0]->avi_tax_type,
+                'avi_theft_recover'          => $vehicleData[0]->avi_theft_recover,
+                'avi_keys_available'         => $vehicleData[0]->avi_keys_available,
+                'summary'                    => $vehicleData[0]->summary,
+            ];
+
+            return $this->sendResponse($data, "Vehicle Retrive Successfull");
         } else {
 
             $data = [];
             return $this->sendResponse($data, "Please ! Fillup the required fields");
-        }
-    }
+		}
+	}
 }

@@ -11,6 +11,10 @@
 |
 */
 
+use App\Http\Controllers\Api\Authcheck\AuctionController;
+use App\Http\Controllers\FrontController;
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -123,5 +127,11 @@ Route::post('user/login', 'FrontController@login');
 
 Route::get('/user/home', 'FrontController@home')->name('home')->middleware('access-token');
 
-Route::get('user/vehicle-details', 'FrontController@home')->name('home')->middleware('access-token');
+Route::get('user/vehicle-details/{id}', function (Request $request) {
+    //$request->userId = $request->session()->get('user_id');
+   // dd($request->id);
+    $vehicle_details = (new FrontController)->fetch_auction_vehicle($request);
+    dd($vehicle_details);
+    return view('user.vehicle_details')->with('data', $data);
+})->middleware('access-token');
 

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2019 at 07:50 AM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.1.27
+-- Generation Time: Oct 24, 2019 at 04:55 AM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.3.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -40,7 +40,8 @@ CREATE TABLE `api_key` (
 --
 
 INSERT INTO `api_key` (`userId`, `api_token`, `created_at`, `updated_at`) VALUES
-(1, 'api5d9098bce1cd1', '2019-09-29 06:12:16', '2019-09-29 06:12:52');
+(1, 'api5d9098bce1cd1', '2019-09-29 06:12:16', '2019-09-29 06:12:52'),
+(2, 'api5db06640b852a', '2019-10-21 12:09:28', '2019-10-23 09:10:00');
 
 -- --------------------------------------------------------
 
@@ -54,7 +55,7 @@ CREATE TABLE `auction_group_name` (
   `auction_group_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1 = Active, 0 = De-Active',
+  `status` int(11) NOT NULL DEFAULT 1 COMMENT '1 = Active, 0 = De-Active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -64,7 +65,7 @@ CREATE TABLE `auction_group_name` (
 --
 
 INSERT INTO `auction_group_name` (`id`, `category_id`, `auction_group_name`, `start_date`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'New North Auction', '2019-10-10', '2019-10-16', 1, '2019-10-08 03:13:19', '2019-10-09 21:41:18'),
+(1, 1, 'New North Auction', '2019-10-21', '2019-10-30', 1, '2019-10-08 03:13:19', '2019-10-09 21:41:18'),
 (2, 2, 'East Auction', '2019-10-07', '2019-10-13', 1, '2019-10-08 03:13:43', '2019-10-08 03:13:43');
 
 -- --------------------------------------------------------
@@ -79,7 +80,7 @@ CREATE TABLE `bid` (
   `user_id` int(11) NOT NULL,
   `current_bid_amount` int(11) NOT NULL,
   `total_bid_amount` int(11) NOT NULL,
-  `status` int(11) DEFAULT '0' COMMENT '1 = Winner, 0 = Loser',
+  `status` int(11) DEFAULT 0 COMMENT '1 = Winner, 0 = Loser',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -130,11 +131,11 @@ CREATE TABLE `members` (
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `addressProof` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `idProof` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `isVerified` int(11) NOT NULL DEFAULT '0' COMMENT '1 = Verified, 0 = None',
+  `isVerified` int(11) NOT NULL DEFAULT 0 COMMENT '1 = Verified, 0 = None',
   `deposit` int(11) DEFAULT NULL,
   `buyingLimit` int(11) DEFAULT NULL,
   `availableLimit` int(11) DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1 = Active, 0 = De-Active',
+  `status` int(11) NOT NULL DEFAULT 1 COMMENT '1 = Active, 0 = De-Active',
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -145,7 +146,8 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`id`, `category_id`, `userName`, `email`, `mobileNo`, `address`, `password`, `addressProof`, `idProof`, `isVerified`, `deposit`, `buyingLimit`, `availableLimit`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Pronab Das', 'pronabdasbaba5@gmail.com', '863874695', 'Sivasagar', '$2y$10$wgiBb1QDDAWcnZgE1wrOH.rkGH2JVksTEvlCIb3W.bfR1Sj3Dymle', '1570510431.jpg', '1570510438.jpg', 1, 10000, 984000, 973000, 1, NULL, '2019-10-07 23:23:58', '2019-10-14 22:45:46');
+(1, 1, 'Pronab Das', 'pronabdasbaba5@gmail.com', '863874695', 'Sivasagar', '$2y$10$wgiBb1QDDAWcnZgE1wrOH.rkGH2JVksTEvlCIb3W.bfR1Sj3Dymle', '1570510431.jpg', '1570510438.jpg', 1, 10000, 984000, 973000, 1, NULL, '2019-10-07 23:23:58', '2019-10-14 22:45:46'),
+(2, 1, 'Archit Singh', 'admin@gmail.com', '+917002088304', 'MuliabariDigboi', '$2y$10$4XJSXAl3O5v8aywpqSgBXusY0mbpTLi8WbBpDXq70c5K1QGOdbJA.', '1571669748.jpg', '1571669749.jpg', 1, 10000, 1000, 1000, 1, NULL, '2019-10-21 09:25:48', '2019-10-22 09:08:57');
 
 -- --------------------------------------------------------
 
@@ -414,7 +416,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `migrations`

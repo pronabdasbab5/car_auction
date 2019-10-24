@@ -43,7 +43,6 @@
 							<div class='icon ion-ios7-loop-strong'></div>
 						</div>
 						<div class='col-sm-10 col-md-10 col-lg-10'>
-						{{Session::get('user_id')}}
 						@if($cat['auction_group_name'])
 							<h4>{{$cat['auction_group_name']}}</h4>
 						@endif
