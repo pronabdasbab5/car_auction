@@ -32,11 +32,11 @@
 		<div class="container">
 			<div class='row'>
 				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
-					<h2>Live Autions</h2>
+					<h2>Autions Details</h2>
 				</div>
 				</div>
 				<div class=' col-lg-6 wow live-auction fadeInLeft'>
-				@foreach($data as $key => $cat)
+				
 				<a href="{{url('user/vehicle-details', $cat['id'])}}">
 					<div class='row'>
 						<div class='col-sm-2 col-md-2 col-lg-2'>
@@ -44,33 +44,15 @@
 						</div>
 						<div class='col-sm-10 col-md-10 col-lg-10'>
 						<!-- {{Session::get('user_id')}} -->
-						@if($cat['auction_group_name'])
-							<h4><span  class="icon fa fa-window-restore"  style="font-size: 20px!important;"></span>&nbsp {{$cat['auction_group_name']}}</h4>
-						@endif
-						@if($cat['time'])
-						<h4><span class='icon fa fa-clock-o' style="font-size: 22px!important;"></span>&nbsp Ends in: {{$cat['time']}}</h4>
-						@endif
-						@if($cat['total_vehicle'])
-							<h4><span  class="icon fa fa-car"  style="font-size: 20px!important;"></span>&nbsp Total vehicles: {{$cat['total_vehicle']}}</h4>
-						@endif
 						
-						</div>
-					</div>
-					</a>
-					@endforeach
-				</div>
-				<div style="background-color: #065c76;"class='live-auction col-lg-6 wow fadeInLeft'>
-				@if($memberData['deposit'])
-							<h4><span  class="icon fa fa-server"  style="font-size: 20px!important;"></span>&nbsp Deposit: {{$memberData['deposit']}}</h4>
-						@endif
-						@if($memberData['buyingLimit'])
-							<h4><span  class="icon fa fa-credit-card"  style="font-size: 20px!important;"></span>&nbsp Buying Limit: {{$memberData['buyingLimit']}}</h4>
-						@endif
-						@if($memberData['availableLimit'])
-							<h4><span  class="icon fa fa-database"  style="font-size: 20px!important;"></span>&nbsp Available Limit: {{$memberData['availableLimit']}}</h4>
-						@endif
-				
-				
+							<h4><span  class="icon fa fa-window-restore"  style="font-size: 20px!important;"></span>&nbsp Maruti Suzuki</h4>
+						<h4><span class='icon fa fa-clock-o' style="font-size: 22px!important;"></span>&nbsp RC: </h4>
+							<h4><span  class="icon fa fa-car"  style="font-size: 20px!important;"></span>&nbsp Mfg: </h4>
+						
+							<h4><span  class="icon fa fa-server"  style="font-size: 20px!important;"></span>&nbsp Petrol </h4>
+							<h4><span  class="icon fa fa-credit-card"  style="font-size: 20px!important;"></span>&nbsp 1st owner</h4>
+							<h4><span  class="icon fa fa-map-marker"  style="font-size: 20px!important;"></span>&nbsp place </h4>
+					
 				
 				</div>
 			</div>

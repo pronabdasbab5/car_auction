@@ -15,6 +15,7 @@ use Response;
 
 class AuctionController extends BaseController
 {
+
     public function fetch_auction (Request $request) {
 
     	if ($request->has('userId')) {
@@ -73,8 +74,7 @@ class AuctionController extends BaseController
 	                'total_vehicle'     => $vehicleCnt,
 	                'time'              => $time,
 	            ];
-	        }
-
+            }
 	        return $this->sendResponse($data, "Auctions Retrive Successfull");
 	    } else {
 

@@ -1232,3 +1232,10 @@ background-color: #e8f0fe;
 	
 	background-color: #e8f0fe;
 }
+.live-auction{
+	box-shadow: 4px 4px 4px 2px #888888;
+	background-color: #2b5866;
+	width: 100%;
+	margin-bottom: 3%;
+	padding: 12px 30px 15px 32px;
+}
