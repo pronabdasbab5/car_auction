@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="{{ asset('css/nivo-themes/default/default.css') }}" type="text/css" />
 
 	<link href="{{ asset('img/logo1.png') }}" rel="shortcut icon">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Merriweather:300italic' rel='stylesheet' type='text/css'>
 	
@@ -32,70 +32,89 @@
 		<div class="container">
 			<div class='row'>
 				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
-					<h2>Live Autions</h2>
+					<h2>Auction </h2>
 				</div>
 				</div>
-				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
+				<div class='wow fadeInLeft '>
+					
 				@foreach($data as $key => $cat)
 				<a href="{{url('user/vehicle/' . $cat['auction_id'] . '/' . $cat['vehicle_id'])}}">
-					<div class='row'>
+					<div class='row live-auction '>
 						<div class='col-sm-2 col-md-2 col-lg-2'>
 							<div class='icon ion-ios7-loop-strong'></div>
 						</div>
+
 						<div class='col-sm-10 col-md-10 col-lg-10'>
 						@if($cat['time'])
-							<h4>Ends In {{$cat['time']}}</h4>
+							<h4><span class='icon fa fa-clock-o' style="font-size: 22px!important;"></span>&nbsp Ends In {{$cat['time']}}</h4>
 						@endif
+						
 						@if($cat['vehicle_name'])
-							<h4>{{$cat['vehicle_name']}}</h4>
+							<h3 style="color: #f33d18;">{{$cat['vehicle_name']}}</h3>
 						@endif
-						@if($cat['regisation_no'])
-							<h4>Registration Number: {{$cat['regisation_no']}}</h4>
-						@endif
-						@if($cat['regisation_available'])
-							<h4>Registration Available: {{$cat['regisation_available']}}</h4>
-						@endif
-						@if($cat['regisation_no'])
-							<h4>Registration No: {{$cat['regisation_no']}}</h4>
-						@endif
-						@if($cat['mfg_month_year'])
-							<h4>Manufature Date: {{$cat['mfg_month_year']}}</h4>
-						@endif
-						@if($cat['fuel_type'])
-							<h4>Fuel Type: {{$cat['fuel_type']}}</h4>
-						@endif
-						@if($cat['owner_type'])
-							<h4>Owner Type: {{$cat['owner_type']}}</h4>
-						@endif
-						@if($cat['state'])
-							<h4>State: {{$cat['state']}}</h4>
-						@endif
-						@if($cat['transmission_type'])
-							<h4>Transmission Type: {{$cat['transmission_type']}}</h4>
-						@endif
-						@if($cat['total_remaining_bids'])
-							<h4>Bids Remaining: {{$cat['total_remaining_bids']}}</h4>
-						@endif
-
-						@if($cat['current_bid_amount'])
-							<h4>Current Bid Amount: {{$cat['current_bid_amount']}}</h4>
-						@endif
-
+						
+						<div class="float-details slideshow-container">
 						@foreach($cat['images'] as $i => $img)
+						<div style="padding: 10%;" class="mySlides fade">
+						
+						
 						@if($img['img'])
 							<img src="{{ $img['img'] }}">
 						@endif
+				
+						</div>
 						@endforeach
+						<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+						<a class="next" onclick="plusSlides(1)">&#10095;</a>
 						
 						</div>
+							
+		<div class="float-details vehi-info">				
+						
+						@if($cat['regisation_no'])
+							<h4><span class='icon fa fa-list-alt' style="font-size: 22px!important;"></span>&nbsp Registration Number: {{$cat['regisation_no']}}</h4>
+						@endif
+						@if($cat['regisation_available'])
+							<h4><span class='icon fa fa-list-alt' style="font-size: 22px!important;"></span>&nbsp Registration Available: {{$cat['regisation_available']}}</h4>
+						@endif
+						@if($cat['regisation_no'])
+							<h4><span class='icon fa fa-file-text' style="font-size: 22px!important;"></span>&nbsp Registration No: {{$cat['regisation_no']}}</h4>
+						@endif
+						@if($cat['mfg_month_year'])
+							<h4><span class='icon fa fa-calendar-check-o' style="font-size: 22px!important;"></span>&nbsp Manufature Date: {{$cat['mfg_month_year']}}</h4>
+						@endif
+						@if($cat['fuel_type'])
+							<h4><span class='icon fa fa-list' style="font-size: 22px!important;"></span>&nbsp Fuel Type: {{$cat['fuel_type']}}</h4>
+						@endif
+						@if($cat['owner_type'])
+							<h4><span class='icon fa fa-users' style="font-size: 22px!important;"></span>&nbsp Owner Type: {{$cat['owner_type']}}</h4>
+						@endif
+						@if($cat['state'])
+							<h4><span class='icon fa fa-map-marker' style="font-size: 22px!important;"></span>&nbsp State: {{$cat['state']}}</h4>
+						@endif
+						@if($cat['transmission_type'])
+							<h4><span class='icon fa fa-car' style="font-size: 22px!important;"></span>&nbsp Transmission Type: {{$cat['transmission_type']}}</h4>
+						@endif
+						</div>
+						@if($cat['total_remaining_bids'])
+							<h4>Bids Remaining: {{$cat['total_remaining_bids']}}</h4> <br>
+						@endif
+<div class="bid-details">
+						@if($cat['current_bid_amount'])
+						<input  type="number" min="{{$cat['current_bid_amount']}}"  value="{{$cat['current_bid_amount']}}">
+							<!-- <h4>Current Bid Amount: {{$cat['current_bid_amount']}}</h4> -->
+
+						@endif
+						<input  class="bid-details-btn" type="button" type="submit" value="BID">
+						</div>
+						
+
+					</div>	
 					</div>
 					</a>
 					@endforeach
 				</div>
-				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
 				
-				
-				</div>
 			</div>
 		</div>
 	</section>
@@ -264,6 +283,34 @@
 		}
 
 	</script>
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+}
+</script>
 
 </body>
 

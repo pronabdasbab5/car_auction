@@ -18,7 +18,8 @@
 	<link rel="stylesheet" href="{{ asset('css/nivo-themes/default/default.css') }}" type="text/css" />
 
 	<link href="{{ asset('img/logo1.png') }}" rel="shortcut icon">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Merriweather:300italic' rel='stylesheet' type='text/css'>
 	
@@ -30,22 +31,207 @@
 <!--DETAILED INFO-->
 <section id='detailed'>
 		<div class="container">
-			<div class='row'>
+			<div class='row '>
 				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
 					<h2>Live Autions</h2>
 				</div>
 				</div>
-				<div class='col-sm-6 col-md-6 col-lg-6 wow fadeInLeft'>
+				<div class='wow fadeInLeft'>
 
-				<a href="">
-					<div class='row'>
-						<div class='col-sm-2 col-md-2 col-lg-2'>
+				
+				<div class='row live-auction '>
+				<div class='col-sm-2 col-md-2 col-lg-2'>
 							<div class='icon ion-ios7-loop-strong'></div>
 						</div>
+
 						<div class='col-sm-10 col-md-10 col-lg-10'>
-						{{dd($data['vehicle_id'])}}
-                        
+							@if($data['time'])
+							<h4><span class='icon fa fa-clock-o' style="font-size: 22px!important;"></span>&nbsp Ends In:  {{$data['time']}}</h4>
+						@endif
+						
+						
+
+						@if($data['status'])
+							<h4><span class='icon fa fa-star-o' style="font-size: 22px!important;"></span>&nbsp status : {{$data['status']}}</h4>
+						@endif
+						
+						<div style="    width: 100%;"class="float-details slideshow-container">
+						@foreach($data['images'] as $i => $img)
+						<div style="padding: 10%;" class="mySlides fade">
+						
+						
+						@if($img['img'])
+							<img style="    max-height: 550px;" src="{{ $img['img'] }}">
+						@endif
+				
 						</div>
+						@endforeach
+						<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+						<a class="next" onclick="plusSlides(1)">&#10095;</a>
+						
+						</div>
+</div>
+						<div class="v-summry vehi-info">	
+
+						@if($data['vehicle_name'])
+							<h4><span class='icon fa fa-car' style="font-size: 22px!important;"></span>&nbsp Vehicle Name: {{$data['vehicle_name']}}</h4>
+						@endif
+</div>
+						@if($data['summary'])
+							<h4 class="summ-h4"><span class='icon fa fa-sticky-note' style="font-size: 22px!important;"></span>&nbsp summary: <br> {{$data['summary']}}</h4>
+						@endif
+						
+<div class="all-details">
+					
+
+						@if($data['regisation_no'])
+							<h4> Registration Number: {{$data['regisation_no']}}</h4>
+						@endif
+						@if($data['regisation_available'])
+							<h4> Registration Available: {{$data['regisation_available']}}</h4>
+						@endif
+                        @if($data['mfg_month_year'])
+							<h4> Manufature Date: {{$data['mfg_month_year']}}</h4>
+						@endif
+						@if($data['fuel_type'])
+							<h4>Fuel Type: {{$data['fuel_type']}}</h4>
+						@endif
+						@if($data['owner_type'])
+							<h4></span>&nbsp Owner Type: {{$data['owner_type']}}</h4>
+						@endif
+						@if($data['state'])
+							<h4> State: {{$data['state']}}</h4>
+						@endif
+						@if($data['transmission_type'])
+							<h4>Transmission Type: {{$data['transmission_type']}}</h4>
+						@endif
+						
+						@if($data['bc_mfg_month_year'])
+							<h4>Manufature Month and Year: {{$data['bc_mfg_month_year']}}</h4>
+						@endif
+						@if($data['bc_color'])
+							<h4>Color: {{$data['bc_color']}}</h4>
+						@endif
+						@if($data['bc_engine_no'])
+							<h4>engine no: {{$data['bc_engine_no']}}</h4>
+						@endif
+						@if($data['bc_chasis_no'])
+							<h4>chasis_no: {{$data['bc_chasis_no']}}</h4>
+						@endif
+						@if($data['bc_transmission_type'])
+							<h4>Transmission Type: {{$data['bc_transmission_type']}}</h4>
+						@endif
+						@if($data['bc_fuel_type'])
+							<h4>Fuel Type: {{$data['bc_fuel_type']}}</h4>
+						@endif
+						@if($data['bc_owner_type'])
+							<h4> Owner Type: {{$data['bc_owner_type']}}</h4>
+						@endif
+						@if($data['bc_vehicle_type'])
+							<h4>Vehicle Type {{$data['bc_vehicle_type']}}</h4>
+						@endif
+
+						@if($data['bc_ownership'])
+							<h4></span>&nbsp Ownership: {{$data['bc_ownership']}}</h4>
+						@endif
+						@if($data['rc_rc_available'])
+							<h4></span>&nbsp RC availability: {{$data['rc_rc_available']}}</h4>
+						@endif
+						@if($data['rc_registration_no'])
+							<h4></span>&nbsp Registration no: {{$data['rc_registration_no']}}</h4>
+						@endif
+
+						@if($data['rc_registration_date'])
+							<h4></span>&nbsp Registration Date: {{$data['rc_registration_date']}}</h4>
+						@endif
+						@if($data['rc_reg_as'])
+							<h4> RC Registration: {{$data['rc_reg_as']}}</h4>
+						@endif
+
+
+						</div>
+<div class="all-details">
+
+						@if($data['tx_road_text_expiray_date'])
+							<h4> Road Text Expire date: {{$data['tx_road_text_expiray_date']}}</h4>
+						@endif
+						@if($data['tx_permit_type'])
+							<h4>Text permit type: {{$data['tx_permit_type']}}</h4>
+						@endif
+						@if($data['tx_permit_expiray_date'])
+							<h4>Text permit expire date: {{$data['tx_permit_expiray_date']}}</h4>
+						@endif
+
+						
+						@if($data['tx_fitness_expiray_date'])
+							<h4>Text Fitness expire date: {{$data['tx_fitness_expiray_date']}}</h4>
+						@endif
+						@if($data['tx_road_taxt_validity'])
+							<h4>Road Text Validity: {{$data['tx_road_taxt_validity']}}</h4>
+						@endif
+						@if($data['hi_financer_name'])
+						<h4>Finencer Name: {{$data['hi_financer_name']}}</h4>
+					
+							@endif
+						@if($data['hi_car_under_hypothecation'])
+							<h4>Car Under hypothecation: {{$data['hi_car_under_hypothecation']}}</h4>
+						
+						@endif
+						@if($data['hi_noc_available'])
+							<h4>Noc Available: {{$data['hi_noc_available']}}</h4>
+						@endif
+						@if($data['hi_repo_date'])
+							<h4>Repo date: {{$data['hi_repo_date']}}</h4>
+						@endif
+						@if($data['hi_loan_paid_off'])
+							<h4>Loan paid off: {{$data['hi_loan_paid_off']}}</h4>
+						@endif
+						@if($data['li_zone'])
+							<h4>Zone: {{$data['li_zone']}}</h4>
+						@endif
+						@if($data['li_state'])
+							<h4>state: {{$data['li_state']}}</h4>
+						@endif
+						@if($data['li_city'])
+							<h4> city: {{$data['li_city']}}</h4>
+						@endif
+						@if($data['li_yard_name'])
+							<h4> Yard name: {{$data['li_yard_name']}}</h4>
+						@endif
+						@if($data['li_yard_location'])
+							<h4> Yard_location: {{$data['li_yard_location']}}</h4>
+						@endif
+						@if($data['avi_superdari_status'])
+							<h4> Superdari status: {{$data['avi_superdari_status']}}</h4>
+						@endif
+						@if($data['avi_tax_type'])
+							<h4> Text Type: {{$data['avi_tax_type']}}</h4>
+						@endif
+						@if($data['avi_theft_recover'])
+							<h4> Theft recover: {{$data['avi_theft_recover']}}</h4>
+						@endif
+						@if($data['avi_keys_available'])
+							<h4> Key Availability: {{$data['avi_keys_available']}}</h4>
+						@endif
+</div></div>	
+<div class="details-buttom">
+
+						@if($data['total_remaining_bids'])
+							<h4>Bids Remaining: {{$data['total_remaining_bids']}}</h4> <br>
+						@endif
+<div class="bid-details">
+	
+						@if($data['current_bid_amount'])
+						<input  type="number" min="{{$data['current_bid_amount']}}"  value="{{$data['current_bid_amount']}}">
+							<!-- <h4>Current Bid Amount: {{$data['current_bid_amount']}}</h4> -->
+
+						@endif
+						<input  class="bid-details-btn" type="button" type="submit" value="BID">
+
+						</div>
+</div>
+
+					
 					</div>
 					</a>
 				</div>
@@ -221,6 +407,34 @@
 		}
 
 	</script>
+	<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+}
+</script>
 
 </body>
 
