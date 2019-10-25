@@ -137,3 +137,6 @@ Route::get('user/vehicle-details/{id}', 'FrontController@fetch_auction_vehicle')
 
 Route::get('user/vehicle/{auction_id}/{vehicle_id}', 'FrontController@vehicle_details')->name('vehicle')->middleware('access-token');
 
+Route::post('user/bid', 'FrontController@bid')->middleware('access-token');
+
+Route::get('user/your_bid', 'FrontController@your_bid')->middleware('access-token');

@@ -434,5 +434,145 @@ class FrontController extends BaseController
             //dd($data);
             //return $this->sendResponse($data, "Vehicle Retrive Successfull");
             return view('user.vehicle')->with('data', $data);
-	}
+    }
+    
+    public function bid(Request $request) {
+
+            $bid     = new Bid;
+            $member  = new Members;
+            $vehicle = new Vehicle;
+            $bidData = $bid->where('vehicle_id', $request->input('vehicle_id'))
+                            ->where('user_id', $request->session()->get('user_id'))
+                            ->orderBy('id', 'DESC')
+                            ->first();
+
+            if (!empty($bidData)) {
+
+                $member->where('id', $request->session()->get('user_id'))
+                        ->decrement('availableLimit', $request->input('bid_amount'));
+
+                $bid->where('user_id', $request->session()->get('user_id'))
+                        ->where('vehicle_id', $request->input('vehicle_id'))
+                        ->update([
+                            'current_bid_amount' => $bidData->current_bid_amount + $request->input('bid_amount'),
+                            'total_bid_amount'   => $bidData->total_bid_amount + $request-> input('bid_amount'),
+                            'updated_at'         => now(),
+                        ]);
+
+            } else {
+
+                $member->where('id', $request->session()->get('user_id'))
+                        ->decrement('availableLimit', $request->input('bid_amount'));
+
+                $bid->insert([
+                    'vehicle_id'         => $request->input('vehicle_id'),
+                    'user_id'            => $request->session()->get('user_id'),
+                    'current_bid_amount' => $request->input('bid_amount'),
+                    'total_bid_amount'   => $request->input('bid_amount'),
+                    'created_at'         => now(),
+                    'updated_at'         => now()
+                ]);
+            }
+            return redirect()->back()->with("message","Bid has been placed Successfully.");
+            // return $this->sendResponse('success', "Bid has benn done Successfully");
+    }
+
+    public function your_bid (Request $request) {
+            
+            $todayDate     = date('Y-m-d');
+            $data          = [];
+            $vehicle       = new Vehicle;
+            $vehicleimages = new Vehicleimages;
+            $member        = new Members;
+            $bid           = new Bid;
+            $vehicleData   = $bid->where('bid.user_id', $request->session()->get('user_id'))
+                                    ->join('vehicle_info', 'bid.vehicle_id', '=', 'vehicle_info.id')
+                                    ->join('auction_group_name', 'vehicle_info.auction_id', '=', 'auction_group_name.id')
+                                    ->where('auction_group_name.end_date', '>=', $todayDate)
+                                    ->where('auction_group_name.start_date', '<=', $todayDate)
+                                    ->select('bid.current_bid_amount', 'bid.total_bid_amount', 'vehicle_info.*', 'auction_group_name.end_date', 'auction_group_name.start_date')
+                                    ->get();
+
+            $auction  = new Auction;
+            foreach ($vehicleData as $key => $value) {
+
+                $vehicleimagesData = $vehicleimages->where('vehicle_id', $value['id'])
+                                                    ->get();
+                foreach ($vehicleimagesData as $key_1 => $value_1) {
+
+                    $url = route('vehicle_image', ['file_name' => $value_1['img_path']]);
+
+                    $vehicle_img[] = [
+                        'id' => $value_1['id'],
+                        'img'=> $url
+                    ];
+                }
+
+                $auctionData   = $auction->find($value['auction_id']);
+                $date1 = strtotime(date('Y-m-d'));  
+                $date2 = strtotime($auctionData->end_date);  
+                $diff = abs($date2 - $date1);   
+                $years = floor($diff / (365*60*60*24));  
+                $months = floor(($diff - $years * 365*60*60*24) 
+                                               / (30*60*60*24));  
+                $days = floor(($diff - $years * 365*60*60*24 -  
+                             $months*30*60*60*24)/ (60*60*24));  
+
+                $time = "";
+
+                if (!empty($months)) 
+                    $time = $months."M, ".$days."D, ".$hours."H";
+
+                if (!empty($days)) 
+                    $time = $days."D";
+                $bidCnt = $bid->where('user_id', $request->session()->get('user_id'))
+                                ->where('vehicle_id', $value['id'])
+                                ->count();
+
+                if($bidCnt == 0){
+                    $bids           = 20;
+                    $current_amount = 1000;
+                    $status         = "Start bidding now !!";
+                } else {
+
+                    $bids           = 20 - $bidCnt;
+                    $bidData        = $bid->where('user_id', $request->session()->get('user_id'))
+                                        ->where('vehicle_id', $value['id'])
+                                        ->orderBy('id', 'DESC')
+                                        ->first();
+                    $current_amount = $bidData->current_bid_amount;
+
+                    if($value['auction_amount'] > $bidData->total_bid_amount)
+                        $status = "Lossing !!";
+
+                    if($bidData->total_bid_amount >= $value['auction_amount'])
+                        $status = "Right Bid !!";
+                }
+                /** End Bid Calculation **/
+                
+                $data [] = [
+
+                    'time'                 => $time,
+                    'status'               => $status,
+                    'vehicle_id'           => $value['id'],
+                    'vehicle_name'         => $value['vehicle_name'],
+                    'images'               => $vehicle_img,
+                    'regisation_no'        => $value['rc_registration_no'],
+                    'regisation_available' => $value['rc_rc_available'],
+                    'mfg_month_year'       => $value['bc_mfg_month_year'],
+                    'fuel_type'            => $value['bc_fuel_type'],
+                    'owner_type'           => $value['bc_owner_type'],
+                    'state'                => $value['li_state'],
+                    'transmission_type'    => $value['bc_transmission_type'],
+                    'total_remaining_bids' => $bids,
+                    'state'                => $value['li_state'],
+                    'current_bid_amount'   => $current_amount,
+
+                ];
+
+                $vehicle_img = [];
+            }
+            //dd($data);
+            return view('user.your_bid')->with('data', $data);
+    }
 }

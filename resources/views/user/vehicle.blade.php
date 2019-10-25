@@ -33,7 +33,7 @@
 		<div class="container">
 			<div class='row '>
 				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
-					<h2>Live Autions</h2>
+					<h2>Vehicle Details</h2>
 				</div>
 				</div>
 				<div class='wow fadeInLeft'>
@@ -78,7 +78,7 @@
 						@endif
 </div>
 						@if($data['summary'])
-							<h4 class="summ-h4"><span class='icon fa fa-sticky-note' style="font-size: 22px!important;"></span>&nbsp summary: <br> {{$data['summary']}}</h4>
+							<h4 class="summ-h4"><span class='icon fa fa-sticky-note' style="font-size: 22px!important;"></span>&nbsp summary: <br> {!!$data['summary']!!}</h4>
 						@endif
 						
 <div class="all-details">
@@ -220,13 +220,19 @@
 							<h4>Bids Remaining: {{$data['total_remaining_bids']}}</h4> <br>
 						@endif
 <div class="bid-details">
-	
+@if(session()->has('message'))
+              <div id="sendmessage" style="display:none;">{{session()->has('message')}}</div>
+              @endif
 						@if($data['current_bid_amount'])
-						<input  type="number" min="{{$data['current_bid_amount']}}"  value="{{$data['current_bid_amount']}}">
+						<form method="POST" action="{{url('user/bid')}}">
+							<input type="hidden" name="_token" value="{{csrf_token()}}">
+							<input type="hidden" name="vehicle_id" value="{{ $data['vehicle_id'] }}">
+							<input name="bid_amount"  type="number"  value="{{$data['current_bid_amount']}}">
 							<!-- <h4>Current Bid Amount: {{$data['current_bid_amount']}}</h4> -->
-
+							<input type="submit" class="bid-details-btn" value="BID">
+						</form>
 						@endif
-						<input  class="bid-details-btn" type="button" type="submit" value="BID">
+						
 
 						</div>
 </div>
