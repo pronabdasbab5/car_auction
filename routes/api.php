@@ -28,6 +28,8 @@ Route::namespace('Api')->group(function () {
         Route::post('user_login', 'LoginController@user_login');
     });
 
+    Route::post('all_notification', 'NotificationController@all_notification')->name('all_notification');
+
     Route::get('vehicle_image/{file_name}', 'Authcheck\AuctionController@vehicle_image')->name('vehicle_image');
     /** End of User Registration and Login Router **/
 
@@ -41,6 +43,7 @@ Route::namespace('Api')->group(function () {
             Route::post('bid', 'AuctionController@bid')->name('bid');
             Route::post('vehicle_details', 'AuctionController@vehicle_details')->name('vehicle_details');
             Route::post('your_bid', 'AuctionController@your_bid')->name('your_bid');
+            Route::post('deposit_buying_limit_available', 'AuctionController@deposit_buying_limit_available')->name('deposit_buying_limit_available');
         });
     });
 });

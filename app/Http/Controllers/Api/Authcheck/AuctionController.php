@@ -75,12 +75,34 @@ class AuctionController extends BaseController
 	                'time'              => $time,
 	            ];
             }
+
 	        return $this->sendResponse($data, "Auctions Retrive Successfull");
 	    } else {
 
     		$data = [];
     		return $this->sendResponse($data, "Please ! Fillup the required fields");
     	}
+    }
+
+    public function deposit_buying_limit_available (Request $request) {
+
+        if ($request->has('userId')) {
+
+            $member      = new Members;
+            $memberData  = $member->find($request->input('userId'));
+
+            $data = [
+                'deposit'         => $memberData->deposit,
+                'buying_limit'    => $memberData->buyingLimit,
+                'available_limit' => $memberData->availableLimit,
+            ];
+
+            return $this->sendResponse($data, "Limit Retrive Successfull");
+        } else {
+
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
     }
 
     public function fetch_auction_vehicle (Request $request) {

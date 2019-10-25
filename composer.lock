@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "04bea734c3bcb962ed9f0f027597d994",
+=======
+    "content-hash": "dbb71fdb81cd4d016a80239eca78ecbb",
+>>>>>>> 0cf3c79a56511e725394a59c9f529987760fefe5
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -379,6 +383,7 @@
             "time": "2019-09-03T16:45:42+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "guzzlehttp/guzzle",
             "version": "6.3.3",
             "source": {
@@ -495,6 +500,8 @@
             "time": "2016-12-20T10:07:11+00:00"
         },
         {
+=======
+>>>>>>> 0cf3c79a56511e725394a59c9f529987760fefe5
             "name": "guzzlehttp/psr7",
             "version": "1.6.1",
             "source": {
