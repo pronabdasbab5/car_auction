@@ -102,9 +102,26 @@ Route::middleware(['auth'])->group(function () {
     Route::namespace('Bid')->group(function () {
 
         Route::get('/running_bids', 'BidController@allRunningBids')->name('running_bids');
+        Route::post('/allauctionbids/{type}', 'BidController@allauctionbids')->name('allauctionbids');
+        Route::get('/allauctionvehiclebids/{auction_id}', 'BidController@all_auction_vehicle_bids')->name('allauctionvehiclebids');
+        Route::get('/bider_list/{vehicle_id}', 'BidController@all_bider_list')->name('bider_list');
+
+
         Route::get('/expired_bids', 'BidController@allExpiredBids')->name('expired_bids');
-        Route::get('/winner_bid/{bidId}', 'BidController@allWinnerBid')->name('winner_bid'); 
+        Route::get('/winner_bid/{bidId}/{vehicle_id}', 'BidController@allWinnerBid')->name('winner_bid'); 
         Route::get('/winner_bids', 'BidController@allWinnerBids')->name('winner_bids');   
     });
+
+    Route::namespace('Payment')->group(function () {
+
+        Route::get('/new_payment', 'PaymentController@newPayment')->name('new_payment');
+        Route::post('add_payment', 'PaymentController@addPayment')->name('add_payment');
+        Route::get('/all_payment_request', 'PaymentController@allPayments')->name('all_payment_request'); 
+    });
+});
+
+Route::namespace('Api')->group(function () {
+    Route::get('pay/{id}/{userId}/{amount}', 'PayController@pay');
+    Route::get('pay_success/{id}', 'PayController@success');
 });
 

@@ -59,7 +59,7 @@ class AuctionController extends BaseController
                 $time = "";
 
                 if (!empty($months)) 
-                    $time = $months."M, ".$days."D, ".$hours."H";
+                    $time = $months."M, ".$days."D";
 
                 if (!empty($days)) 
                     $time = $days."D";
@@ -117,6 +117,7 @@ class AuctionController extends BaseController
             $auction       = new Auction;
             $auctionData   = $auction->find($request->input('auction_id'));
             $vehicleData   = $vehicle->where('auction_id', $request->input('auction_id'))
+                                    ->where('status', 0)
                                     ->get();
 
             foreach ($vehicleData as $key => $value) {
@@ -160,7 +161,7 @@ class AuctionController extends BaseController
                 $time = "";
 
                 if (!empty($months)) 
-                    $time = $months."M, ".$days."D, ".$hours."H";
+                    $time = $months."M, ".$days."D";
 
                 if (!empty($days)) 
                     $time = $days."D";
@@ -450,7 +451,7 @@ class AuctionController extends BaseController
             $time = "";
 
             if (!empty($months)) 
-                $time = $months."M, ".$days."D, ".$hours."H";
+                $time = $months."M, ".$days."D";
 
             if (!empty($days)) 
                 $time = $days."D";
@@ -555,6 +556,7 @@ class AuctionController extends BaseController
             $member        = new Members;
             $bid           = new Bid;
             $vehicleData   = $bid->where('bid.user_id', $request->input('userId'))
+                                    ->where('bid.user_id', $request->input('userId'))
                                     ->join('vehicle_info', 'bid.vehicle_id', '=', 'vehicle_info.id')
                                     ->join('auction_group_name', 'vehicle_info.auction_id', '=', 'auction_group_name.id')
                                     ->where('auction_group_name.end_date', '>=', $todayDate)
@@ -606,7 +608,7 @@ class AuctionController extends BaseController
                 $time = "";
 
                 if (!empty($months)) 
-                    $time = $months."M, ".$days."D, ".$hours."H";
+                    $time = $months."M, ".$days."D";
 
                 if (!empty($days)) 
                     $time = $days."D";
@@ -673,17 +675,208 @@ class AuctionController extends BaseController
 
         if ($request->has('userId') && $request->has('vehicleId')) {
 
-            DB::table('whish_list')
-                ->insert([
-                    'vehicleId' => $request->input('vehicleId'),
-                    'userId'    => $request->input('userId')
-                ]);
+            $row_cnt = DB::table('whish_list')
+                            ->where('userId', $request->input('userId'))
+                            ->where('vehicleId', $request->input('vehicleId'))
+                            ->count();
+
+            if ($row_cnt > 0) {
+
+               $data = [
+                    'status' => "success"
+                ];
+
+                return $this->sendResponse($data, "Already added in wish list");
+            } else {
+
+                DB::table('whish_list')
+                        ->insert([
+                            'vehicleId' => $request->input('vehicleId'),
+                            'userId'    => $request->input('userId')
+                        ]);
+
+                $data = [
+                    'status' => "success"
+                ];
+
+                return $this->sendResponse($data, "Vehicle added in wish list");
+            }
             
+        } else {
+
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
+    }
+
+    public function remove_wish_list (Request $request) {
+
+        if ($request->has('userId') && $request->has('vehicleId')) {
+
+            $row_cnt = DB::table('whish_list')
+                            ->where('userId', $request->input('userId'))
+                            ->where('vehicleId', $request->input('vehicleId'))
+                            ->delete();
+
             $data = [
                 'status' => "success"
             ];
 
-            return $this->sendResponse($data, "Vehicle has been added successfully in the wish list");
+            return $this->sendResponse($data, "Vehicle has been deleted from wish list");
+            
+        } else {
+
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
+    }
+
+    public function payment_request_list (Request $request) {
+
+        if ($request->has('userId')) {
+
+            $paymentData = DB::table('payment')
+                            ->where('userId', $request->input('userId'))
+                            ->where('status', 1)
+                            ->select('id', 'msg', 'amount')
+                            ->get();
+
+            $data = [];
+            foreach ($paymentData as $key => $value) {
+
+                $data[] = [
+                    'id' => $value->id,
+                    'userId' => $request->input('userId'),
+                    'msg' => $value->msg,
+                    'amount' => $value->amount,
+                ];
+            }
+
+            return $this->sendResponse($data, "Payment notification has been recived successfully");
+        } else {
+
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
+    }
+
+    public function wish_list (Request $request) {
+
+        if ($request->has('userId')) {
+
+            $data          = [];
+            $vehicle       = new Vehicle;
+            $vehicleimages = new Vehicleimages;
+            $member        = new Members;
+            $bid           = new Bid;
+            $auction       = new Auction;
+
+            $todayDate   = date('Y-m-d');
+            $vehicleData   = DB::table('whish_list')->where('whish_list.userId', $request->input('userId'))
+                                ->join('vehicle_info', 'whish_list.vehicleId', '=', 'vehicle_info.id')
+                                ->join('auction_group_name', 'vehicle_info.auction_id', '=', 'auction_group_name.id')
+                                ->where('auction_group_name.end_date', '>=', $todayDate)
+                                ->where('auction_group_name.start_date', '<=', $todayDate)
+                                ->select('vehicle_info.*', 'whish_list.userId', 'auction_group_name.start_date', 'auction_group_name.end_date')
+                                ->get();
+
+            foreach ($vehicleData as $key => $value) {
+
+                $vehicleimagesData = $vehicleimages->where('vehicle_id', $value->id)
+                                                    ->get();
+                foreach ($vehicleimagesData as $key_1 => $value_1) {
+
+                    $url = route('vehicle_image', ['file_name' => $value_1['img_path']]);
+
+                    $vehicle_img[] = [
+                        'id' => $value_1['id'],
+                        'img'=> $url
+                    ];
+                }
+
+                /** Time Calculation **/
+                // Declare and define two dates 
+                $date1 = strtotime(date('Y-m-d'));  
+                $date2 = strtotime($value->end_date);  
+                  
+                // Formulate the Difference between two dates 
+                $diff = abs($date2 - $date1);  
+                  
+                // To get the year divide the resultant date into 
+                // total seconds in a year (365*60*60*24) 
+                $years = floor($diff / (365*60*60*24));  
+                  
+                // To get the month, subtract it with years and 
+                // divide the resultant date into 
+                // total seconds in a month (30*60*60*24) 
+                $months = floor(($diff - $years * 365*60*60*24) 
+                                               / (30*60*60*24));  
+                  
+                // To get the day, subtract it with years and  
+                // months and divide the resultant date into 
+                // total seconds in a days (60*60*24) 
+                $days = floor(($diff - $years * 365*60*60*24 -  
+                             $months*30*60*60*24)/ (60*60*24));  
+
+                $time = "";
+
+                if (!empty($months)) 
+                    $time = $months."M, ".$days."D";
+
+                if (!empty($days)) 
+                    $time = $days."D";
+                /** End of Time Calculation **/
+
+                /** User Bid Calculation **/
+                $bidCnt = $bid->where('user_id', $request->input('userId'))
+                                ->where('vehicle_id', $value->id)
+                                ->count();
+
+                if($bidCnt == 0){
+                    $bids           = 20;
+                    $current_amount = 1000;
+                    $status         = "Start bidding now !!";
+                } else {
+
+                    $bids           = 20 - $bidCnt;
+                    $bidData        = $bid->where('user_id', $request->input('userId'))
+                                        ->where('vehicle_id', $value->id)
+                                        ->orderBy('id', 'DESC')
+                                        ->first();
+                    $current_amount = $bidData->current_bid_amount;
+
+                    if($value->auction_amount > $bidData->total_bid_amount)
+                        $status = "Lossing !!";
+
+                    if($bidData->total_bid_amount >= $value->auction_amount)
+                        $status = "Right Bid !!";
+                }
+                /** End Bid Calculation **/
+                
+                $data [] = [
+
+                    'time'                 => $time,
+                    'status'               => $status,
+                    'vehicle_id'           => $value->id,
+                    'vehicle_name'         => $value->vehicle_name,
+                    'images'               => $vehicle_img,
+                    'regisation_no'        => $value->rc_registration_no,
+                    'regisation_available' => $value->rc_rc_available,
+                    'mfg_month_year'       => $value->bc_mfg_month_year,
+                    'fuel_type'            => $value->bc_fuel_type,
+                    'owner_type'           => $value->bc_owner_type,
+                    'state'                => $value->li_state,
+                    'transmission_type'    => $value->bc_transmission_type,
+                    'total_remaining_bids' => $bids,
+                    'state'                => $value->li_state,
+                    'current_bid_amount'   => $current_amount,
+
+                ];
+
+                $vehicle_img = [];
+            }
+
+            return $this->sendResponse($data, "Wish List Retrive Successfull");
         } else {
 
             $data = [];
