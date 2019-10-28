@@ -102,7 +102,8 @@ class FrontController extends BaseController
 				$members_data = $members->where('mobileNo', $request->input('user_name'))
 										->where('status', 1)
 										->get();
-				
+                if(count($members_data) > 0)
+                {
 				$api_key       = new Apikey;
 				$api_key_count = $api_key->where('userId', $members_data[0]['id'])
 										->count();
@@ -120,7 +121,10 @@ class FrontController extends BaseController
 				}
 				else {
 
-					$api_token = uniqid('api');
+                    $api_token = uniqid('api');
+                    
+                    $api_key->userId     = $members_data[0]['id'];
+	                $api_key->api_token  = $api_token;
 
 					if ($api_key->save()) {
 						$request->session()->put('user_id', $members_data[0]['id']);
@@ -130,7 +134,11 @@ class FrontController extends BaseController
 					else{
 						return view('user.login')->with('message', "Something wrong while Login");
 					}
-				}
+                }
+            }
+            else {
+				return view('user.login')->with('message', "Username or Password incorrect");
+			}
 			} else {
 				return view('user.login')->with('message', "Username or Password incorrect");
 			}
