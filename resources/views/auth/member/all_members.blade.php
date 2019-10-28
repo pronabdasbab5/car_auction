@@ -11,7 +11,7 @@
             <div class="clearfix"></div>
           </div>
             <div class="x_content"><br />
-                <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <table id="datatable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Sl No</th>

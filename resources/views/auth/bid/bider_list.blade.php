@@ -7,7 +7,7 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h4><b>All Expired Bids</b></h4>
+            <h4><b>All Running Bids</b></h4>
             <div class="clearfix"></div>
           </div>
             <div class="x_content"><br />
@@ -45,8 +45,7 @@
                                     <th>{{ $val->vehicle_name }}</th>
                                     <th>{{ $val->auction_amount }}</th>
                                     <th>
-                                        <a href="{{ route('winner_bid', ['bidId' => $val->id]) }}" class="btn btn-primary text-bold">Make Winner</a>
-                                        <a href="{{ route('vehicle_details', ['vehicle_id' => $val->vehicle_id]) }}" class="btn btn-warning text-bold" target="_blank">Vehicle Details</a>
+                                        <a href="{{ route('winner_bid', ['bidId' => $val->id, 'vehicle_id' => $val->vehicle_id]) }}" class="btn btn-primary text-bold">Make Winner</a>
                                     </th>
                                 </tr>
                             @endforeach

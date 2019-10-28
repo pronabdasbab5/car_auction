@@ -44,7 +44,11 @@ Route::namespace('Api')->group(function () {
             Route::post('vehicle_details', 'AuctionController@vehicle_details')->name('vehicle_details');
             Route::post('your_bid', 'AuctionController@your_bid')->name('your_bid');
             Route::post('deposit_buying_limit_available', 'AuctionController@deposit_buying_limit_available')->name('deposit_buying_limit_available');
+            Route::post('payment_request_list', 'AuctionController@payment_request_list')->name('payment_request_list');
+            Route::post('add_wish_list', 'AuctionController@add_wish_list')->name('add_wish_list');
+            Route::post('wish_list', 'AuctionController@wish_list')->name('wish_list');
+            Route::post('remove_wish_list', 'AuctionController@remove_wish_list')->name('remove_wish_list');
         });
-    });
+    });  
 });
  

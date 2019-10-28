@@ -7,50 +7,23 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h4><b>All Running Bids</b></h4>
+            <h3>All Running Bids</h3>
             <div class="clearfix"></div>
           </div>
             <div class="x_content"><br />
-                <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <table id="all_running_auction" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Sl No</th>
+                            <th>Category</th>
                             <th>Auction Group Name</th>
-                            <th>Party Name</th>
-                            <th>Email</th>
-                            <th>Mobile No</th>
-                            <th>Address</th>
-                            <th>Current Bid Amount</th>
-                            <th>Total Bid Amount</th>
-                            <th>Vehicle Name</th>
-                            <th>Auction Amount</th>
-                            <th>Action</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Time</th>
+                            <th>All Vehicle</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(count($bidData) > 0)
-                            @php
-                                $cnt = 1;
-                            @endphp
-                            @foreach($bidData as $val)
-                                <tr>
-                                    <th>{{ $cnt++ }}</th>
-                                    <th>{{ $val->auction_group_name }}</th>
-                                    <th>{{ $val->userName }}</th>
-                                    <th>{{ $val->email }}</th>
-                                    <th>{{ $val->mobileNo }}</th>
-                                    <th>{{ $val->address }}</th>
-                                    <th>{{ $val->current_bid_amount }}</th>
-                                    <th>{{ $val->total_bid_amount }}</th>
-                                    <th>{{ $val->vehicle_name }}</th>
-                                    <th>{{ $val->auction_amount }}</th>
-                                    <th>
-                                        <a href="{{ route('winner_bid', ['bidId' => $val->id]) }}" class="btn btn-primary text-bold">Make Winner</a>
-                                        <a href="{{ route('vehicle_details', ['vehicle_id' => $val->vehicle_id]) }}" class="btn btn-warning text-bold" target="_blank">Vehicle Details</a>
-                                    </th>
-                                </tr>
-                            @endforeach
-                        @endif
                     </tbody>
                 </table>
             </div>
@@ -58,4 +31,36 @@
         </div>
       </div>
 </div>
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    
+$(document).ready(function(){
+
+    var type = 1;
+
+    $('#all_running_auction').DataTable({
+
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+            "url": "{{ url('/allauctionbids') }}/1",
+            "dataType": "json",
+            "type": "POST",
+            "data":{ _token: "{{csrf_token()}}", 'type': type}
+        },
+        "columns": [
+            { "data": "id" },
+            { "data": "category" },
+            { "data": "auctionGroupName" },
+            { "data": "startDate" },
+            { "data": "endDate" },
+            { "data": "time" },
+            { "data": "allVehicle" },
+        ],    
+    });
+});
+
+</script>
 @endsection

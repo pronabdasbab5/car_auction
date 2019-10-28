@@ -8,11 +8,10 @@
         <div class="x_panel">
           <div class="x_title">
             <h4>Auction Vehicles</h4>
-            <a href="{{ route('newauction') }}" style="float: right; font-weight: bolder; font-size: 18px;">New Auction</a>
             <div class="clearfix"></div>
           </div>
             <div class="x_content"><br />
-                <table id="datatable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Sl No</th>
@@ -22,6 +21,7 @@
                             <th>Fuel Type</th>
                             <th>Owner Type</th>
                             <th>View Full Details</th>
+                            <th>Bider List</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,6 +38,7 @@
                                 <td><b>{{ $value['bc_fuel_type'] }}</b></td>
                                 <td><b>{{ $value['bc_owner_type'] }}</b></td>
                                 <td><a href="{{ route('vehicle_details', ['vehicleId' => $value['id']]) }}" class="btn btn-warning"><b>View More Details</b></a></td>
+                                <td><a href="{{ route('bider_list', ['vehicleId' => $value['id']]) }}" class="btn btn-primary"><b>Click Here</b></a></td>
                             </tr>
                         @endforeach
                     </tbody>

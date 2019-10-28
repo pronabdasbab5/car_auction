@@ -11,9 +11,13 @@
         "php": "^7.1.3",
         "fideloper/proxy": "^4.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
         "guzzlehttp/guzzle": "^6.3",
 =======
 >>>>>>> 0cf3c79a56511e725394a59c9f529987760fefe5
+=======
+        "instamojo/instamojo-php": "^0.4.0",
+>>>>>>> fd25421182b05487d9dafbe3cf2e564332621340
         "intervention/image": "^2.5",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0"

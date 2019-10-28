@@ -192,7 +192,7 @@ class AuctionController extends Controller
                     $time = "";
 
                     if (!empty($months)) 
-                        $time = $months."M, ".$days."D, ".$hours."H";
+                        $time = $months."M, ".$days."D";
 
                     if (!empty($days)) 
                         $time = $days."D";
