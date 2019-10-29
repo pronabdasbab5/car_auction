@@ -392,9 +392,7 @@ input:focus{
 #nav li a{
 	color: #fff;
 }
-#nav > ul > li:first-child{
-	display: none;
-}
+
 #nav li:after{
 	border-color: #bcc8cc;
 }
@@ -1402,4 +1400,8 @@ img {vertical-align: middle;}
 /* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
   .prev, .next,.text {font-size: 11px}
+}
+
+.delete-wish-btn{
+	width: 40%!important; float: left; background-color: #20ded5!important;
 }

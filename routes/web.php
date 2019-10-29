@@ -157,3 +157,14 @@ Route::get('user/vehicle/{auction_id}/{vehicle_id}', 'FrontController@vehicle_de
 Route::post('user/bid', 'FrontController@bid')->middleware('access-token');
 
 Route::get('user/your_bid', 'FrontController@your_bid')->middleware('access-token');
+
+Route::post('user/add_wish_list', 'FrontController@add_wish_list')->middleware('access-token');
+
+Route::get('user/wish_list', 'FrontController@wish_list')->middleware('access-token');
+
+Route::post('user/remove_wish_list', 'FrontController@remove_wish_list')->middleware('access-token');
+
+Route::get('user/payment_request_list', 'FrontController@payment_request_list')->middleware('access-token');
+
+Route::get('user/all_notification', 'FrontController@all_notification')->middleware('access-token');
+

@@ -26,7 +26,7 @@
 </head>
 <body class='android'>
 
-	@include('user.header')
+	@include('user.header1')
 
 <!--DETAILED INFO-->
 <section id='detailed'>

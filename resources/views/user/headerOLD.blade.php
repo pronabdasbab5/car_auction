@@ -2,15 +2,18 @@
 <header id='header'>
 		<div id='menu-bar' class='animated fadeIn'>
 			<div class='container'>
-				
+				<div class='logo'>
+					<img src="{{ asset('img/logo1.png') }}" alt="" style="height: 110px;">
+				</div>
 				<nav  id="nav" class='nav'>
 					<ul class='nav-inner'>
-						<li><a href="{{url('user/home')}}">Home</a></li>
-						<li><a href="{{url('user/all_notification')}}">Notification</a></li>
-						<li><a href="{{url('user/payment_request_list')}}">Payment Request</a></li>
-						<li><a href="{{url('user/wish_list')}}">Wishlist</a></li>
-						<li><a href="{{url('user/your_bid')}}">Your bids</a></li>
-						<li><a href="#contact">Logout</a></li>
+						<li class='current'><a href="#header">Home</a></li>
+						<li><a href="#about">Why Us</a></li>
+						<li><a href="#features">Features</a></li>
+						<li><a href="#screenshots">Screens</a></li>
+						<li><a href="#reviews">About Us</a></li>
+						<li><a href="#download">Download</a></li>
+						<li><a href="#contact">Contact</a></li>
 					</ul>
 				</nav>
 			</div>

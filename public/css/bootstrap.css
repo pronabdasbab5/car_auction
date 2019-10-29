@@ -1012,10 +1012,11 @@ hr {
 
 #sendmessage {
   color: #f44c54;
-  border: 1px solid #09b7ec;
+  /* border: 1px solid #09b7ec; */
+  font-size: 120%;
   text-align: center;
-  padding: 15px;
-  background-color: #09b7ec;
+  padding: 18px;
+  /* background-color: #09b7ec; */
   font-weight: 1000;
   /* margin-bottom: 15px; */
 }

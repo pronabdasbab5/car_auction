@@ -25,7 +25,7 @@
 </head>
 <body class='android'>
 
-	@include('user.header')
+	@include('user.header1')
 
 <!--DETAILED INFO-->
 <section id='detailed'>
@@ -34,26 +34,40 @@
 				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
 					<h2>Auction </h2>
 				</div>
+				@if(session()->has('msg'))
+              <div id="sendmessage">{{session()->get('msg')}}</div>
+              @endif
 				</div>
+				@if(count($data) > 0)
 				<div class='wow fadeInLeft '>
+				
 					
 				@foreach($data as $key => $cat)
-				<a href="{{url('user/vehicle/' . $cat['auction_id'] . '/' . $cat['vehicle_id'])}}">
+				
 					<div class='row live-auction '>
-						<div class='col-sm-2 col-md-2 col-lg-2'>
-							<div class='icon ion-ios7-loop-strong'></div>
+					<form id="wish" method="POST" action="{{url('user/add_wish_list')}}">
+					<input type="hidden" name="_token" value="{{csrf_token()}}">
+					<input type="hidden" name="vehicleId" value="{{$cat['vehicle_id']}}">
+						<div style=" text-align: center;" class='col-sm-2 col-md-2 col-lg-2'>
+							<h3 style="color: #f31100; margin-bottom: -17px;">Add to wishlist</h3>
+							<a onclick="document.getElementById('wish').submit()">
+							<div style="color: #f31100;" class='icon ion-heart'></div>
+							</a>
 						</div>
-
+						</form>
+										
 						<div class='col-sm-10 col-md-10 col-lg-10'>
+						<a href="{{url('user/vehicle/' . $cat['auction_id'] . '/' . $cat['vehicle_id'])}}">
 						@if($cat['time'])
 							<h4><span class='icon fa fa-clock-o' style="font-size: 22px!important;"></span>&nbsp Ends In {{$cat['time']}}</h4>
 						@endif
 						
 						@if($cat['vehicle_name'])
-							<h3 style="color: #f33d18;">{{$cat['vehicle_name']}}</h3>
+							<h3 style="color: #c5e8e8;">{{$cat['vehicle_name']}}</h3>
 						@endif
 						
 						<div class="float-details slideshow-container">
+
 						@foreach($cat['images'] as $i => $img)
 						<div style="padding: 10%;" class="mySlides fade">
 						
@@ -99,7 +113,7 @@
 						@if($cat['total_remaining_bids'])
 							<h4>Bids Remaining: {{$cat['total_remaining_bids']}}</h4> <br>
 						@endif
-<div class="bid-details">
+				<div class="bid-details">
 						@if($cat['current_bid_amount'])
 						<input  type="number" min="{{$cat['current_bid_amount']}}"  value="{{$cat['current_bid_amount']}}">
 							<!-- <h4>Current Bid Amount: {{$cat['current_bid_amount']}}</h4> -->
@@ -113,6 +127,11 @@
 					</div>
 					</a>
 					@endforeach
+					@else
+					<div class='row live-auction '>
+					No active auctions found.
+					</div>
+					@endif
 				</div>
 				
 			</div>

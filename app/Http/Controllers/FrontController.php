@@ -10,6 +10,7 @@ use App\Models\Auction\Auction;
 use App\Models\Vehicle\Vehicle;
 use App\Models\Apikey\Apikey;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Models\Notification\Notification;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 
@@ -20,6 +21,7 @@ use EloquentBuilder;
 use File;
 use DateTime;
 use Hash;
+use DB;
 
 class FrontController extends BaseController
 {
@@ -194,7 +196,7 @@ class FrontController extends BaseController
                 $time = "";
 
                 if (!empty($months)) 
-                    $time = $months."M, ".$days."D, ".$hours."H";
+                    $time = $months."M, ".$days."D";
 
                 if (!empty($days)) 
                     $time = $days."D";
@@ -256,7 +258,7 @@ class FrontController extends BaseController
                 $time = "";
 
                 if (!empty($months)) 
-                    $time = $months."M, ".$days."D, ".$hours."H";
+                    $time = $months."M, ".$days."D";
 
                 if (!empty($days)) 
                     $time = $days."D";
@@ -356,7 +358,7 @@ class FrontController extends BaseController
             $time = "";
 
             if (!empty($months)) 
-                $time = $months."M, ".$days."D, ".$hours."H";
+                $time = $months."M, ".$days."D";
 
             if (!empty($days)) 
                 $time = $days."D";
@@ -529,7 +531,7 @@ class FrontController extends BaseController
                 $time = "";
 
                 if (!empty($months)) 
-                    $time = $months."M, ".$days."D, ".$hours."H";
+                    $time = $months."M, ".$days."D";
 
                 if (!empty($days)) 
                     $time = $days."D";
@@ -582,5 +584,198 @@ class FrontController extends BaseController
             }
             //dd($data);
             return view('user.your_bid')->with('data', $data);
+    }
+public function add_wish_list (Request $request) {
+
+        $row_cnt = DB::table('whish_list')
+                        ->where('userId', $request->session()->get('user_id'))
+                        ->where('vehicleId', $request->input('vehicleId'))
+                        ->count();
+
+        if ($row_cnt > 0) {
+            return redirect()->back()->with("msg","Already added in wish list");
+            
+           // return $this->sendResponse($data, "Already added in wish list");
+        } else {
+
+            DB::table('whish_list')
+                    ->insert([
+                        'vehicleId' => $request->input('vehicleId'),
+                        'userId'    => $request->session()->get('user_id')
+                    ]);
+                    return redirect()->back()->with("msg","Vehicle added in wish list");
+        }
+        
+    
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+public function wish_list (Request $request) {
+
+  
+
+        $data          = [];
+        $vehicle       = new Vehicle;
+        $vehicleimages = new Vehicleimages;
+        $member        = new Members;
+        $bid           = new Bid;
+        $auction       = new Auction;
+
+        $todayDate   = date('Y-m-d');
+        $vehicleData   = DB::table('whish_list')->where('whish_list.userId', $request->session()->get('user_id'))
+                            ->join('vehicle_info', 'whish_list.vehicleId', '=', 'vehicle_info.id')
+                            ->join('auction_group_name', 'vehicle_info.auction_id', '=', 'auction_group_name.id')
+                            ->where('auction_group_name.end_date', '>=', $todayDate)
+                            ->where('auction_group_name.start_date', '<=', $todayDate)
+                            ->select('vehicle_info.*', 'whish_list.userId', 'auction_group_name.start_date', 'auction_group_name.end_date')
+                            ->get();
+
+        foreach ($vehicleData as $key => $value) {
+
+            $vehicleimagesData = $vehicleimages->where('vehicle_id', $value->id)
+                                                ->get();
+            foreach ($vehicleimagesData as $key_1 => $value_1) {
+
+                $url = route('vehicle_image', ['file_name' => $value_1['img_path']]);
+
+                $vehicle_img[] = [
+                    'id' => $value_1['id'],
+                    'img'=> $url
+                ];
+            }
+
+            /** Time Calculation **/
+            // Declare and define two dates 
+            $date1 = strtotime(date('Y-m-d'));  
+            $date2 = strtotime($value->end_date);  
+              
+            // Formulate the Difference between two dates 
+            $diff = abs($date2 - $date1);  
+              
+            // To get the year divide the resultant date into 
+            // total seconds in a year (365*60*60*24) 
+            $years = floor($diff / (365*60*60*24));  
+              
+            // To get the month, subtract it with years and 
+            // divide the resultant date into 
+            // total seconds in a month (30*60*60*24) 
+            $months = floor(($diff - $years * 365*60*60*24) 
+                                           / (30*60*60*24));  
+              
+            // To get the day, subtract it with years and  
+            // months and divide the resultant date into 
+            // total seconds in a days (60*60*24) 
+            $days = floor(($diff - $years * 365*60*60*24 -  
+                         $months*30*60*60*24)/ (60*60*24));  
+
+            $time = "";
+
+            if (!empty($months)) 
+                $time = $months."M, ".$days."D";
+
+            if (!empty($days)) 
+                $time = $days."D";
+            /** End of Time Calculation **/
+
+            /** User Bid Calculation **/
+            $bidCnt = $bid->where('user_id',$request->session()->get('user_id'))
+                            ->where('vehicle_id', $value->id)
+                            ->count();
+
+            if($bidCnt == 0){
+                $bids           = 20;
+                $current_amount = 1000;
+                $status         = "Start bidding now !!";
+            } else {
+
+                $bids           = 20 - $bidCnt;
+                $bidData        = $bid->where('user_id', $request->session()->get('user_id'))
+                                    ->where('vehicle_id', $value->id)
+                                    ->orderBy('id', 'DESC')
+                                    ->first();
+                $current_amount = $bidData->current_bid_amount;
+
+                if($value->auction_amount > $bidData->total_bid_amount)
+                    $status = "Lossing !!";
+
+                if($bidData->total_bid_amount >= $value->auction_amount)
+                    $status = "Right Bid !!";
+            }
+            /** End Bid Calculation **/
+            
+            $data [] = [
+
+                'time'                 => $time,
+                'status'               => $status,
+                'vehicle_id'           => $value->id,
+                'vehicle_name'         => $value->vehicle_name,
+                'images'               => $vehicle_img,
+                'regisation_no'        => $value->rc_registration_no,
+                'regisation_available' => $value->rc_rc_available,
+                'mfg_month_year'       => $value->bc_mfg_month_year,
+                'fuel_type'            => $value->bc_fuel_type,
+                'owner_type'           => $value->bc_owner_type,
+                'state'                => $value->li_state,
+                'transmission_type'    => $value->bc_transmission_type,
+                'total_remaining_bids' => $bids,
+                'state'                => $value->li_state,
+                'current_bid_amount'   => $current_amount,
+
+            ];
+
+            $vehicle_img = [];
+        }
+        return view("user.wishList")->with("data", $data);
+       // return $this->sendResponse($data, "Wish List Retrive Successfull");
+}
+public function remove_wish_list (Request $request) {
+
+        $row_cnt = DB::table('whish_list')
+                        ->where('userId', $request->session()->get('user_id'))
+                        ->where('vehicleId', $request->input('vehicleId'))
+                        ->delete();
+
+
+        // return $this->sendResponse($data, "Vehicle has been deleted from wish list");
+        return redirect()->back()->with("msg","Vehicle has been deleted from wish list");
+}
+
+public function payment_request_list (Request $request) {
+
+
+        $paymentData = DB::table('payment')
+                        ->where('userId', $request->session()->get('user_id'))
+                        ->where('status', 1)
+                        ->select('id', 'msg', 'amount')
+                        ->get();
+
+        $data = [];
+        foreach ($paymentData as $key => $value) {
+
+            $data[] = [
+                'id' => $value->id,
+                'userId' => $request->session()->get('user_id'),
+                'msg' => $value->msg,
+                'amount' => $value->amount,
+            ];
+        }
+        return view("user.PaymentReqList")->with("data", $data);
+    
+}
+public function all_notification (Request $request) {
+
+        $data             = [];
+        $notification     = new Notification;
+        $notificationData = $notification->all();
+
+        foreach ($notificationData as $key => $value) {
+                
+            $data [] = [
+
+                'id'    => $value['id'],
+                'title' => $value['title'],
+                'desc'  => $value['desc']
+            ];
+        }
+
+        return view("user.notification")->with("data", $data);
     }
 }

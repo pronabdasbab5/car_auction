@@ -19,7 +19,6 @@
 
 	<link href="{{ asset('img/logo1.png') }}" rel="shortcut icon">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Merriweather:300italic' rel='stylesheet' type='text/css'>
 	
@@ -32,91 +31,34 @@
 <section id='detailed'>
 		<div class="container">
 			<div class='row '>
-            <div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
-					<h2>Your Bid</h2>
+			<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
+					<h2>Notification</h2>
 				</div>
 				</div>
-				<div class=' col-lg-6 wow live-auction fadeInLeft'>
 				@foreach($data as $key => $cat)
+				<div class=' col-lg-6 wow live-auction fadeInLeft'>
+				
 				
 					<div class='row'>
 						<div class='col-sm-2 col-md-2 col-lg-2'>
 							<div class='icon ion-ios7-loop-strong'></div>
-						</div>						
-            <div class='col-sm-10 col-md-10 col-lg-10'>
-						@if($cat['time'])
-							<h4><span class='icon fa fa-clock-o' style="font-size: 22px!important;"></span>&nbsp Ends In {{$cat['time']}}</h4>
-						@endif
-						
-						@if($cat['vehicle_name'])
-							<h3 style="color: #f33d18;">{{$cat['vehicle_name']}}</h3>
-						@endif
-						
-						<div class="float-details slideshow-container">
-
-						@foreach($cat['images'] as $i => $img)
-						<div style="padding: 10%;" class="mySlides fade">
-						
-						
-						@if($img['img'])
-							<img src="{{ $img['img'] }}">
-						@endif
-				
 						</div>
-						@endforeach
-						<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-						<a class="next" onclick="plusSlides(1)">&#10095;</a>
+						<div class='col-sm-10 col-md-10 col-lg-10'>
+						<!-- {{Session::get('user_id')}} -->
+						@if($cat['title'])
+							<h4><span  class="icon fa fa-bell"  style="font-size: 20px!important;"></span>&nbsp {{$cat['title']}}</h4>
+						@endif
+						
+						@if($cat['desc'])
+							<h4>{!! $cat['desc']!!}</h4>
+						@endif
 						
 						</div>
-							
-		<div class="float-details vehi-info">				
-						
-						@if($cat['regisation_no'])
-							<h4><span class='icon fa fa-list-alt' style="font-size: 22px!important;"></span>&nbsp Registration Number: {{$cat['regisation_no']}}</h4>
-						@endif
-						@if($cat['regisation_available'])
-							<h4><span class='icon fa fa-list-alt' style="font-size: 22px!important;"></span>&nbsp Registration Available: {{$cat['regisation_available']}}</h4>
-						@endif
-						@if($cat['regisation_no'])
-							<h4><span class='icon fa fa-file-text' style="font-size: 22px!important;"></span>&nbsp Registration No: {{$cat['regisation_no']}}</h4>
-						@endif
-						@if($cat['mfg_month_year'])
-							<h4><span class='icon fa fa-calendar-check-o' style="font-size: 22px!important;"></span>&nbsp Manufature Date: {{$cat['mfg_month_year']}}</h4>
-						@endif
-						@if($cat['fuel_type'])
-							<h4><span class='icon fa fa-list' style="font-size: 22px!important;"></span>&nbsp Fuel Type: {{$cat['fuel_type']}}</h4>
-						@endif
-						@if($cat['owner_type'])
-							<h4><span class='icon fa fa-users' style="font-size: 22px!important;"></span>&nbsp Owner Type: {{$cat['owner_type']}}</h4>
-						@endif
-						@if($cat['state'])
-							<h4><span class='icon fa fa-map-marker' style="font-size: 22px!important;"></span>&nbsp State: {{$cat['state']}}</h4>
-						@endif
-						@if($cat['transmission_type'])
-							<h4><span class='icon fa fa-car' style="font-size: 22px!important;"></span>&nbsp Transmission Type: {{$cat['transmission_type']}}</h4>
-						@endif
-						</div>
-						@if($cat['total_remaining_bids'])
-							<h4>Bids Remaining: {{$cat['total_remaining_bids']}}</h4> <br>
-						@endif
-                        <div class="bid-details">
-						@if($cat['current_bid_amount'])
-						<input style="width: 60%!important;" type="number" min="{{$cat['current_bid_amount']}}"  value="{{$cat['current_bid_amount']}}">
-							<!-- <h4>Current Bid Amount: {{$cat['current_bid_amount']}}</h4> -->
-							<input style="width: 40%!important;" class="bid-details-btn" type="button" type="submit" value="BID AGAIN">
-						
-						@endif
-
-					
-						</div>
-						
-	
 					</div>
+				
 					
-					@endforeach
-
-               
-			</div>
+				</div>
+            @endforeach
 		</div>
 	</section>
 
@@ -284,7 +226,7 @@
 		}
 
 	</script>
-	<script>
+<script>
 var slideIndex = 1;
 showSlides(slideIndex);
 

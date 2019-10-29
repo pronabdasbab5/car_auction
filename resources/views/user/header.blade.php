@@ -6,15 +6,15 @@
 					<img src="{{ asset('img/logo1.png') }}" alt="" style="height: 110px;">
 				</div>
 				<nav  id="nav" class='nav'>
-					<ul class='nav-inner'>
+					<!-- <ul class='nav-inner'>
 						<li class='current'><a href="#header">Home</a></li>
-						<!-- <li><a href="#about">Why Us</a></li>
+						 <li><a href="#about">Why Us</a></li>
 						<li><a href="#features">Features</a></li>
 						<li><a href="#screenshots">Screens</a></li>
 						<li><a href="#reviews">About Us</a></li>
 						<li><a href="#download">Download</a></li>
-						<li><a href="#contact">Contact</a></li> -->
-					</ul>
+						<li><a href="#contact">Contact</a></li> 
+					</ul> -->
 				</nav>
 			</div>
 		</div>

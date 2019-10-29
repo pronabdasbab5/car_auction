@@ -32,17 +32,21 @@
 <section id='detailed'>
 		<div class="container">
 			<div class='row '>
-            <div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
-					<h2>Your Bid</h2>
+				<div class='col-sm-12 col-md-7 col-lg-7 wow fadeInLeft'>
+					<h2>Your Wishlist </h2>
 				</div>
-				</div>
-				<div class=' col-lg-6 wow live-auction fadeInLeft'>
-				@foreach($data as $key => $cat)
-				
-					<div class='row'>
-						<div class='col-sm-2 col-md-2 col-lg-2'>
+				@if(session()->has('msg'))
+						<div id="sendmessage">{{session()->get('msg')}}</div>
+						@endif
+						
+                </div>
+				 @foreach($data as $key => $cat)
+                <div class='col-sm-2 col-md-2 col-lg-2'>
 							<div class='icon ion-ios7-loop-strong'></div>
-						</div>						
+						</div>
+				
+           
+            <div class='row live-auction '>
             <div class='col-sm-10 col-md-10 col-lg-10'>
 						@if($cat['time'])
 							<h4><span class='icon fa fa-clock-o' style="font-size: 22px!important;"></span>&nbsp Ends In {{$cat['time']}}</h4>
@@ -103,16 +107,23 @@
 						@if($cat['current_bid_amount'])
 						<input style="width: 60%!important;" type="number" min="{{$cat['current_bid_amount']}}"  value="{{$cat['current_bid_amount']}}">
 							<!-- <h4>Current Bid Amount: {{$cat['current_bid_amount']}}</h4> -->
-							<input style="width: 40%!important;" class="bid-details-btn" type="button" type="submit" value="BID AGAIN">
+							<input style="width: 40%!important;" class="bid-details-btn" type="button" type="submit" value="BID">
 						
 						@endif
 
-					
+						
+						<form method="POST" action="{{url('user/remove_wish_list')}}">
+						<input type="hidden" name="_token" value="{{csrf_token()}}">
+						<input type="hidden" name="vehicleId" value="{{$cat['vehicle_id']}}">
+
+						<input class="delete-wish-btn bid-details-btn" type="submit" value="Delete from Wishlist">
+						</form>
 						</div>
 						
-	
+
+					</div>	
 					</div>
-					
+					</a>
 					@endforeach
 
                
