@@ -4,15 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "content-hash": "04bea734c3bcb962ed9f0f027597d994",
-=======
-    "content-hash": "dbb71fdb81cd4d016a80239eca78ecbb",
->>>>>>> 0cf3c79a56511e725394a59c9f529987760fefe5
-=======
-    "content-hash": "a46c1e5d35584c142fa0c029c9f8ec05",
->>>>>>> fd25421182b05487d9dafbe3cf2e564332621340
+    "content-hash": "daa8c34eef9c4e213b130225bdba725f",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -387,29 +379,29 @@
             "time": "2019-09-03T16:45:42+00:00"
         },
         {
-<<<<<<< HEAD
             "name": "guzzlehttp/guzzle",
-            "version": "6.3.3",
+            "version": "6.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba"
+                "reference": "0895c932405407fd3a7368b6910c09a24d26db11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/407b0cb880ace85c9b63c5f9551db498cb2d50ba",
-                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0895c932405407fd3a7368b6910c09a24d26db11",
+                "reference": "0895c932405407fd3a7368b6910c09a24d26db11",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "guzzlehttp/promises": "^1.0",
-                "guzzlehttp/psr7": "^1.4",
+                "guzzlehttp/psr7": "^1.6.1",
                 "php": ">=5.5"
             },
             "require-dev": {
                 "ext-curl": "*",
                 "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
-                "psr/log": "^1.0"
+                "psr/log": "^1.1"
             },
             "suggest": {
                 "psr/log": "Required for using the Log middleware"
@@ -421,12 +413,12 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
                 "psr-4": {
                     "GuzzleHttp\\": "src/"
-                }
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -450,7 +442,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2018-04-22T15:46:56+00:00"
+            "time": "2019-10-23T15:58:00+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -504,8 +496,6 @@
             "time": "2016-12-20T10:07:11+00:00"
         },
         {
-=======
->>>>>>> 0cf3c79a56511e725394a59c9f529987760fefe5
             "name": "guzzlehttp/psr7",
             "version": "1.6.1",
             "source": {
@@ -4318,16 +4308,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.16",
+            "version": "7.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "316afa6888d2562e04aeb67ea7f2017a0eb41661"
+                "reference": "4c92a15296e58191a4cd74cff3b34fc8e374174a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/316afa6888d2562e04aeb67ea7f2017a0eb41661",
-                "reference": "316afa6888d2562e04aeb67ea7f2017a0eb41661",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4c92a15296e58191a4cd74cff3b34fc8e374174a",
+                "reference": "4c92a15296e58191a4cd74cff3b34fc8e374174a",
                 "shasum": ""
             },
             "require": {
@@ -4398,7 +4388,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-09-14T09:08:39+00:00"
+            "time": "2019-10-28T10:37:36+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

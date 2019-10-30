@@ -16,25 +16,24 @@ use DB;
 
 class AuctionController extends BaseController
 {
-
     public function fetch_auction (Request $request) {
 
-    	if ($request->has('userId')) {
+        if ($request->has('userId')) {
 
-	        $todayDate   = date('Y-m-d');
+            $todayDate   = date('Y-m-d');
             $data        = [];
-	        $vehicle     = new Vehicle;
+            $vehicle     = new Vehicle;
             $member      = new Members;
-    		$auction     = new Auction;
+            $auction     = new Auction;
             $memberData  = $member->find($request->input('userId'));
-    		$auctionData = $auction->where('category_id', $memberData->category_id)
+            $auctionData = $auction->where('category_id', $memberData->category_id)
                                     ->where('end_date', '>=', $todayDate)
                                     ->where('start_date', '<=', $todayDate)
                                     ->get();
 
-	        foreach ($auctionData as $key => $value) {
+            foreach ($auctionData as $key => $value) {
 
-	        	// Declare and define two dates 
+                // Declare and define two dates 
                 $date1 = strtotime(date('Y-m-d'));  
                 $date2 = strtotime($value['end_date']);  
                   
@@ -65,24 +64,25 @@ class AuctionController extends BaseController
                 if (!empty($days)) 
                     $time = $days."D";
 
-	        	$vehicleCnt = $vehicle->where('auction_id', $value['id'])
-	        						->count();
-	            
-	            $data [] = [
+                $vehicleCnt = $vehicle->where('auction_id', $value['id'])
+                                    ->count();
+                
+                $data [] = [
 
-	                'id'                => $value['id'],
-	                'auction_group_name'=> $value['auction_group_name'],
-	                'total_vehicle'     => $vehicleCnt,
-	                'time'              => $time,
-	            ];
+                    'id'                => $value['id'],
+                    'auction_group_name'=> $value['auction_group_name'],
+                    'auction_end_date'  => $value['end_date'],
+                    'total_vehicle'     => $vehicleCnt,
+                    'time'              => $time,
+                ];
             }
 
-	        return $this->sendResponse($data, "Auctions Retrive Successfull");
-	    } else {
+            return $this->sendResponse($data, "Auctions Retrive Successfull");
+        } else {
 
-    		$data = [];
-    		return $this->sendResponse($data, "Please ! Fillup the required fields");
-    	}
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
     }
 
     public function deposit_buying_limit_available (Request $request) {
@@ -179,12 +179,12 @@ class AuctionController extends BaseController
                     $status         = "Start bidding now !!";
                 } else {
 
-                    $bids           = 20 - $bidCnt;
                     $bidData        = $bid->where('user_id', $request->input('userId'))
                                         ->where('vehicle_id', $value['id'])
                                         ->orderBy('id', 'DESC')
                                         ->first();
                     $current_amount = $bidData->current_bid_amount;
+                    $bids           = $bidData->total_bids;
 
                     if($value['auction_amount'] > $bidData->total_bid_amount)
                         $status = "Lossing !!";
@@ -227,7 +227,7 @@ class AuctionController extends BaseController
 
     public function vehicle_image ($file_name) {
 
-        $path = storage_path('app\vehicle_images\\'.$file_name);
+        $path = storage_path('app/vehicle_images/'.$file_name);
 
         if (!File::exists($path)) 
             $response = 404;
@@ -262,6 +262,7 @@ class AuctionController extends BaseController
                         ->update([
                             'current_bid_amount' => $bidData->current_bid_amount + $request->input('bid_amount'),
                             'total_bid_amount'   => $bidData->total_bid_amount + $request-> input('bid_amount'),
+                            'total_bids'         => $bidData->total_bids - 1,
                             'updated_at'         => now(),
                         ]);
 
@@ -275,6 +276,7 @@ class AuctionController extends BaseController
                     'user_id'            => $request->input('userId'),
                     'current_bid_amount' => $request->input('bid_amount'),
                     'total_bid_amount'   => $request->input('bid_amount'),
+                    'total_bids'         => 19,
                     'created_at'         => now(),
                     'updated_at'         => now()
                 ]);
@@ -388,8 +390,12 @@ class AuctionController extends BaseController
 
             // $member->where('id', $request->input('userId'))
             //         ->decrement('buyingLimit', $request->input('bid_amount'));
+            
+            $data = [
+                    'status' => "success"
+                ];
 
-            return $this->sendResponse('success', "Bid has benn done Successfully");
+            return $this->sendResponse($data, "Bid has benn done Successfully");
         } else {
 
             $data = [];
@@ -469,12 +475,12 @@ class AuctionController extends BaseController
                 $status         = "Start bidding now !!";
             } else {
 
-                $bids           = 20 - $bidCnt;
                 $bidData        = $bid->where('user_id', $request->input('userId'))
                                         ->where('vehicle_id', $request->input('vehicle_id'))
                                         ->orderBy('id', 'DESC')
                                         ->first();
                 $current_amount = $bidData->current_bid_amount;
+                $bids           = $bidData->total_bids;
 
                 if($vehicleData[0]->auction_amount > $bidData->total_bid_amount)
                     $status = "Lossing !!";
@@ -492,6 +498,7 @@ class AuctionController extends BaseController
                 'time'                       => $time,
                 'status'                     => $status,
                 'vehicle_id'                 => $vehicleData[0]->id,
+                'auction_id'                 => $vehicleData[0]->auction_id,
                 'vehicle_name'               => $vehicleData[0]->vehicle_name,
                 'images'                     => $vehicle_img,
                 'regisation_no'              => $vehicleData[0]->rc_registration_no,
@@ -557,7 +564,6 @@ class AuctionController extends BaseController
             $member        = new Members;
             $bid           = new Bid;
             $vehicleData   = $bid->where('bid.user_id', $request->input('userId'))
-                                    ->where('bid.user_id', $request->input('userId'))
                                     ->join('vehicle_info', 'bid.vehicle_id', '=', 'vehicle_info.id')
                                     ->join('auction_group_name', 'vehicle_info.auction_id', '=', 'auction_group_name.id')
                                     ->where('auction_group_name.end_date', '>=', $todayDate)
@@ -626,12 +632,12 @@ class AuctionController extends BaseController
                     $status         = "Start bidding now !!";
                 } else {
 
-                    $bids           = 20 - $bidCnt;
                     $bidData        = $bid->where('user_id', $request->input('userId'))
                                         ->where('vehicle_id', $value['id'])
                                         ->orderBy('id', 'DESC')
                                         ->first();
                     $current_amount = $bidData->current_bid_amount;
+                    $bids           = $bidData->total_bids;
 
                     if($value['auction_amount'] > $bidData->total_bid_amount)
                         $status = "Lossing !!";
@@ -646,6 +652,7 @@ class AuctionController extends BaseController
                     'time'                 => $time,
                     'status'               => $status,
                     'vehicle_id'           => $value['id'],
+                    'auction_id'           => $value['auction_id'],
                     'vehicle_name'         => $value['vehicle_name'],
                     'images'               => $vehicle_img,
                     'regisation_no'        => $value['rc_registration_no'],
@@ -709,7 +716,7 @@ class AuctionController extends BaseController
             return $this->sendResponse($data, "Please ! Fillup the required fields");
         }
     }
-
+    
     public function remove_wish_list (Request $request) {
 
         if ($request->has('userId') && $request->has('vehicleId')) {
@@ -739,6 +746,7 @@ class AuctionController extends BaseController
             $paymentData = DB::table('payment')
                             ->where('userId', $request->input('userId'))
                             ->where('status', 1)
+                            ->orWhere('status', 3)
                             ->select('id', 'msg', 'amount')
                             ->get();
 
@@ -839,12 +847,12 @@ class AuctionController extends BaseController
                     $status         = "Start bidding now !!";
                 } else {
 
-                    $bids           = 20 - $bidCnt;
                     $bidData        = $bid->where('user_id', $request->input('userId'))
                                         ->where('vehicle_id', $value->id)
                                         ->orderBy('id', 'DESC')
                                         ->first();
                     $current_amount = $bidData->current_bid_amount;
+                    $bids           = $bidData->total_bids;
 
                     if($value->auction_amount > $bidData->total_bid_amount)
                         $status = "Lossing !!";
@@ -859,6 +867,7 @@ class AuctionController extends BaseController
                     'time'                 => $time,
                     'status'               => $status,
                     'vehicle_id'           => $value->id,
+                    'auction_id'           => $value->auction_id,
                     'vehicle_name'         => $value->vehicle_name,
                     'images'               => $vehicle_img,
                     'regisation_no'        => $value->rc_registration_no,
@@ -878,6 +887,52 @@ class AuctionController extends BaseController
             }
 
             return $this->sendResponse($data, "Wish List Retrive Successfull");
+        } else {
+
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
+    }
+
+    public function member_data(Request $request) {
+
+        if ($request->has('userId')) {
+
+            $member      = new Members;
+            $memberData  = $member->find($request->input('userId'));
+
+            $data = [
+                'userId'   => $request->input('userId'),
+                'userName' => $memberData->userName,
+                'email'    => $memberData->email,
+                'mobileNo' => $memberData->mobileNo,
+                'address'  => $memberData->address,
+            ];
+
+            return $this->sendResponse($data, "Member Info. Retrive Successfull");
+        } else {
+
+            $data = [];
+            return $this->sendResponse($data, "Please ! Fillup the required fields");
+        }
+    }
+
+    public function update_member_data(Request $request) {
+
+        if ($request->has('userId') && $request->has('userName') && $request->has('email') && $request->has('address')) {
+
+            DB::table('members')->where('id', $request->input('userId'))
+                        ->update([
+                            'userName' => $request->input('userName'),
+                            'email' => $request->input('email'),
+                            'address' => $request->input('address'),
+                        ]);
+
+            $data = [
+                'status' => "success"
+            ];
+
+            return $this->sendResponse($data, "Member Info. has been updated.");
         } else {
 
             $data = [];

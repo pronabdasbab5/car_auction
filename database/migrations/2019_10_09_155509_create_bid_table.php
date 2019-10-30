@@ -19,6 +19,7 @@ class CreateBidTable extends Migration
             $table->integer('user_id');
             $table->integer('current_bid_amount');
             $table->integer('total_bid_amount');
+            $table->integer('total_bids');
             $table->string('status')->comment('Start biding, Losing, Right biding');
             $table->timestamps();
         });

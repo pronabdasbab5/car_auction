@@ -22,7 +22,7 @@ class BaseController extends Controller
 
             $response = [
                 'code'    => 200,
-                'status'  => false,
+                'status'  => true,
                 'data'    => $data,
                 'message' => $message,
             ];

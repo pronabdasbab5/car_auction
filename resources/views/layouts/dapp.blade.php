@@ -9,7 +9,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Car Auction : Admin Dashboard</title>
+    <title>GaadiTrade : Admin Dashboard</title>
 
     <!-- Bootstrap -->
     <link href="{{ asset('vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -37,7 +37,7 @@
         <div class="col-md-3 left_col" style="height: 100%">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="{{ route('home') }}" class="site_title"><span>Car Auction</span></a>
+              <a href="{{ route('home') }}" class="site_title"><span>GaadiTrade</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -189,7 +189,7 @@
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            Developed By <a href="http://webinfotech.net.in/" target="_blank">Web InfoTech</a>
+            Developed By <a href="https://www.softnue.com/index.php" target="_blank">Softnue</a>
           </div>
           <div class="clearfix"></div>
         </footer>
